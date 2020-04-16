@@ -17,4 +17,6 @@ fehQlibs-12c:	Checking carefully all dnsstub return codes
 fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
 		UI changed:	log() -> log_who()
 		Added: man str(3)
+fehQlibs-13a: Fixed wrong input boundary checking for multiple
+	DNSCACHE variables settings in dns_rcip.c. (Tx. J.W.)
 

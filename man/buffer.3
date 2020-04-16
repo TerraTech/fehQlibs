@@ -27,8 +27,11 @@ int \fBbuffer_putflush\fP(buffer* \fIb\fR,char *\fIx\fR,unsigned int \fIlen\fR);
 .br
 int \fBbuffer_putsflush\fP(buffer* \fIb\fR,char *\fIx\fR);
 
+int \fBbuffer_copy\fP(buffer* \fIbo\fR,buffer* \fIbi\fR);
 
-
+int \fBbuffer_unixread\fP(int \fIfd\fR,char* \fIbuf\fR,size_t \fIlen\fR);
+.br
+int \fBbuffer_unixwrite\fP(int \fIfd\fR,char* \fIbuf\fR,size_t \fIlen\fR);
 .SH DESCRIPTION
 .B buffer.h 
 describes a generic buffer interface that can be used for
@@ -101,11 +104,23 @@ before copying any data, while
 .B buffer_putalign 
 fills all available space with data before calling
 .B buffer_flush.
+
+.B buffer_copy
+copies one buffer to other one. 
+The output buffer needs to have at least the 
+preallocated size of the input buffer.
+.B buffer_unixread
+and
+.B buffer_unixwrite
+perform the same operation like standard Unix
+.B read
+or 
+.BR write.
 .SH EXAMPLE
   #include <buffer.h>
   #include <open.h>
 
-  char buf[4096];
+  char buf[BUFFER_INSIZE]; // defined in buffer.h
   int fd = open_read("/etc/services");
   buffer input;
 
@@ -118,14 +133,28 @@ fills all available space with data before calling
     }
     buffer_flush(buffer_1);
   }
-.SH "RETURN VALUE"
+.SH "RETURN CODES"
 .B buffer_put 
 and 
 .B buffer_get
 return
 .I 0 
 if everything was fine, 
-.I -1 
+.IR -1 ,
 on error (setting \fIerrno\fR).
+.B buffer_copy
+returns
+.IR -2 ,
+if the input buffer can't be read, and
+.IR -3 ,
+if the data can't successfully copied 
+to the output buffer. On success
+.B buffer_copy 
+returns 
+.IR 0 .
+.SH "REFRENCES"
+https://cr.yp.to/lib/buffer_get.html
+
+https://cr.yp.to/lib/buffer_put.html
 .SH "SEE ALSO"
 stdio(3)

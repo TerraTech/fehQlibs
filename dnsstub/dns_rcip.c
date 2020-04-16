@@ -35,7 +35,7 @@ static int init(char ip[QUERY_MAXIPLEN],uint32 sid[QUERY_MAXNS])
 
   x = env_get("DNSCACHEIP");
   if (x)
-    while (iplen <= 240 && x != '\0') {
+    while (iplen <= 240 && *x != '\0') {
       if (*x == ' ') 
         ++x; 
       else 

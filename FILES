@@ -1,11 +1,11 @@
-./BUILD = 9db65ec39de9e563de7e010c68dcc3e7
-./CHANGELOG = 86faf268bb4c6d4885b02d91699aebeb
+./BUILD = 053bc6e3d356e33ad58cf9b638c86fcb
+./CHANGELOG = 5804af0facab4b12c276c8bf9a43f853
 ./CONTENT = e5fb179512b7edc99d23ed0d67cf08a1
 ./LICENSE = 43df073a04022f63913c379646905da6
 ./Makefile = 2094d2d544157afa0c3de2a4de5f8aad
-./README = 07e641d25391456e4b0f0bb59ae830a4
+./README.md = 0e7b43624c0d0cf87a4fecbba33af42f
 ./TARGETS = bbf3849fd4dc7cdbddf585daa3ddba3d
-./VERSION = ec248ff15d3fbfff9dbfa85df87c960b
+./VERSION = d42b8b9743765c279fd49e96ef7bcebe
 ./alloc.c = f273f8d97eb5567eadddb0554162dbff
 ./base64.c = 3a2830988bc99a672f09557b288dfd81
 ./buffer.c = 907ba59e08b6e365169080249ec954f7
@@ -15,7 +15,7 @@
 ./cdbread.c = 5eeb568fb122813c7ac0a3d273b98591
 ./conf-build = a6b6fd07cb52744a56dd21cfa98a8ab5
 ./configure = 03b12b55621e041bc57768e13687401f
-./dnsstub = 6854372a7c16a1c176d6b92f9970405a
+./dnsstub = b317f9f927ec7e712c5423ce33189ca0
 ./dnsstub/Makefile = 68b1b5f7346c11e4db42e699277b0960
 ./dnsstub/README = 6c1bacb8c0bc728edee59a780b7a2cfe
 ./dnsstub/TARGETS = 723bd9a97f59f9091fbe2fba10ef8e5e
@@ -30,7 +30,7 @@
 ./dnsstub/dns_nd.c = 0ae702e0f8ec85b136da043ed55b47d7
 ./dnsstub/dns_packet.c = f7f1c3f8486d6b4177364041f990c2c6
 ./dnsstub/dns_random.c = 7429f11a2181d0771046ffd85f4acb38
-./dnsstub/dns_rcip.c = ba6e6dba4b46592eca38231785a47a9f
+./dnsstub/dns_rcip.c = 64ff17782844366b59aec189b8750cf9
 ./dnsstub/dns_rcrw.c = eef58504f78670446915f20ef7e93c86
 ./dnsstub/dns_resolve.c = b87073a95605a6f6001e9f61879cad47
 ./dnsstub/dns_sortip.c = e04c584dbe68a4c5731e7bcea8fa896f
@@ -42,7 +42,7 @@
 ./fmt.c = b2627c34a39b7a492ec07969931c6bc9
 ./getln.c = bb694220f8bedb7f7f8a8dd8a6d91347
 ./getoptb.c = 92c4305401f59359b8dac69e1df84647
-./include = ae5c5cde936d78a14ce40fd3f6d35c70
+./include = 57ae855cc412613d64d7c65448bec7a0
 ./include/alloc.h = fc20a6d23d60eeaa84a913b19cea2a6f
 ./include/base64.h = 518e08181673aff5e497eb526a427b1d
 ./include/buffer.h = 4ff0a37e7b614e0d80123782f706f54a
@@ -91,9 +91,9 @@
 ./ip6.c = 8b00b6650c49aa993253305576db03b0
 ./lock.c = 50aa9fca4611c86f943c49256b7a001a
 ./logmsg.c = 369b9f1d4171cd4e63d2c2f246697fde
-./man = 9f96741a3c7c454203a0136f209926e3
+./man = b0972e956faa741d37b3ec2385ac8f47
 ./man/alloc.3 = 56b67538656c462ed8bf14434ffabbe4
-./man/buffer.3 = b47aabd8d289c1559489817f39d6faa9
+./man/buffer.3 = 3abe76f70b7a683a32130fbcf7c45509
 ./man/byte.3 = 1f7b64b865af727150f9b951154b6fee
 ./man/case.3 = 0d162dd17d2b86d91b3b090f08cee5d5
 ./man/cdbmake.3 = 54e604b19d139b0c5b451b86c58802d5
