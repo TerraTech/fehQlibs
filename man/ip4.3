@@ -8,8 +8,6 @@ unsigned int \fBip4_fmt\fP(char *\fIs\fR,char \fIip[4]\fR);
 .br
 unsigned int \fBip4_scan\fP(const char *\fIs\fR,char \fIip[4]\fR);
 .br
-unsigned int \fBip_scan\fP(char *\fIs\fR,char \fIip[4]\fR);
-.br
 unsigned int \fBip4_scanbracket\fP(char *\fIs\fR,char \fIip[4]\fR);
 .br
 unsigned int \fBip_scanbracket\fP(char *\fIip_str\fR,char *\fIs\fR);
@@ -30,15 +28,6 @@ reads an IPv4 address string
 and converts it to the
 .I char[4] 
 IPv4 address.
-
-.B ip_scan
-calls 
-.B ip4_san
-in compatibility mode with the first argument als input and
-the second as output. Upon detecting an IPv6 address it calls
-.I ip6_scan
-and otherwise
-.IR ip4_scan .
 
 .B ip4_scanbracket
 reads an IPv4 address string enclosed in brackets

@@ -8,7 +8,7 @@
 
 /**
 	@file socket_send.c
-	@authers djb, fefe, feh
+	@author djb, fefe, feh
 	@source ucspi-tcp6
 	@brief setup sending socket
 */
@@ -20,6 +20,7 @@ int socket_send4(int s,const char *buf,unsigned int len,const char ip[4],uint16 
   struct sockaddr_in sa;
 
   byte_zero(&sa,sizeof(sa));
+
   sa.sin_family = AF_INET;
   uint16_pack_big((char *)&sa.sin_port,port);
   byte_copy((char *)&sa.sin_addr,4,ip);
@@ -37,13 +38,14 @@ int socket_send6(int s,const char *buf,unsigned int len,const char ip[16],uint16
   sa.sin6_scope_id = scope_id;
   uint16_pack_big((char *)&sa.sin6_port,port);
   byte_copy((char *)&sa.sin6_addr,16,ip);
+
   return sendto(s,buf,len,0,(struct sockaddr *)&sa,sizeof(sa));
 }
 
 int socket_send(int s,const char *buf,unsigned int len,const char ip[16],uint16 port,uint32 scope_id)
 { 
-  if ((ipv4socket = ip6_isv4mapped(ip)))
+  if (ip6_isv4mapped(ip))
     return socket_send4(s,buf,len,ip+12,port);
- 
-  return socket_send6(s,buf,len,ip,port,scope_id);
+  else 
+    return socket_send6(s,buf,len,ip,port,scope_id);
 } 

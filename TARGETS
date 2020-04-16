@@ -27,9 +27,7 @@ ip.a
 ip4.o
 ip6.o
 libdnsresolv.a
-libdnsresolv.so
 libqlibs.a
-libqlibs.so
 lock.a
 lock.o
 logmsg.a
@@ -46,7 +44,6 @@ readclose.o
 scan.o
 seek.a
 seek.o
-sharedlib
 sig.a
 sig.o
 socket.a
@@ -75,3 +72,5 @@ uint32p.o
 uint64p.o
 wait.a
 wait.o
+libdnsresolv.so
+libqlibs.so

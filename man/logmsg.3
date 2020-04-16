@@ -18,7 +18,7 @@ int logmsg(char *who, int ecode, unsigned int classs, char *msg)
 .br
 \fBerr_int_plus\fR(w,e,c,m) logmsg(w,e,c,m)
 .br
-\fBlog\fR(w,m) logmsg(w,0,LOG,m)
+\fBlog_who\fR(w,m) logmsg(w,0,LOG,m)
 .br
 \fBlog_anon\fR(m) logmsg("",0,LOG,m)
 .SH DESCRIPTION
@@ -38,7 +38,7 @@ The \fIclass\fr parameter indicates how the application handles exceptions and d
 log message.
 .TP 4
 o
-\fBLOG\fR, \fBINFO\fR, \fBWARN\fR - display message and continue operation
+\fBLOG\fR, \fBINFO\fR, \fBALERT\fR, \fBWARN\fR - display message and continue operation
 .TP 4
 o
 \fBDROP\fR - display warning message and continue while going to the calling program
@@ -48,8 +48,8 @@ o
 - display error message and exit application with error code
 .RE
 
-\fBINFO\fR, \fBWARN\fR, \fBDROP\fR, \fBUSAGE\fR, and \fBFATAL\fR as well as \fBERROR\fR 
-display the respective class string like \fIwarn:\fR in the log message, 
+\fBINFO\fR, \fBALERT\fR, \fBWARN\fR, \fBDROP\fR, \fBUSAGE\fR, and \fBFATAL\fR as well 
+as \fBERROR\fR display the respective class string like \fIwarning:\fR in the log message, 
 while \fBLOG\fR shows the log message only.
 
 The class \fBFATAL\fR should be used for system error codes only, rather \fBERROR\fR
@@ -97,9 +97,9 @@ The macro definitions uses  \fBw\fR for the calling program,
   err_tmp("",-100);
   err_tmp("",errno,"additional message");
 
-  log(WHO,"message");
+  log_who(WHO,"message");
 
-log_anon() is like log() but doesn't print the caller name.
+log_anon() is like log_who() but doesn't print the caller name.
 
 An user defined message \fBs\fR can be build from multiple arguments by using the \fIB\fR
 (build) macro:

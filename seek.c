@@ -3,7 +3,7 @@
 
 /**
 	@file seek.c
-	@auther djb
+	@author djb
 	@source qmail
 	@brief seek in an open file descritor
 */

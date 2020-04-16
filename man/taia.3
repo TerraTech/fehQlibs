@@ -4,27 +4,27 @@ taia \- Temps Atomique International (Attosecond) time routines
 .SH SYNTAX
 .B #include \(dqtaia.h\(dq
 
-extern int \fBtaia_add\fP(struct taia* \fIt\fR,const struct taia* \fIa\fR,const struct taia* \fIb\fR);
+extern int \fBtaia_add\fP(struct taia *\fIt\fR,const struct taia *\fIa\fR,const struct taia *\fIb\fR);
 .br
-extern int \fBtaia_addsec\fP(struct taia* \fIt\fR,const struct taia* \fIs\fR,int \fIsecs\fR);
+extern int \fBtaia_addsec\fP(struct taia *\fIt\fR,const struct taia *\fIs\fR,int \fIsecs\fR);
 .br
-extern int \fBtaia_approx\fP(const struct taia* \fIt\fR);
+extern int \fBtaia_approx\fP(const struct taia *\fIt\fR);
 .br
-int \fBtaia_frac\fP(const struct taia* \fIt\fR);
+int \fBtaia_frac\fP(const struct taia *\fIt\fR);
 .br
-extern int \fBtaia_less\fP(const struct tai* \fIa\fR,const struct tai* \fIb\fR);
+extern int \fBtaia_less\fP(const struct tai *\fIa\fR,const struct tai *\fIb\fR);
 .br
-extern int \fBtaia_now\fP(struct taia* \fIt\fR);
+extern int \fBtaia_now\fP(struct taia *\fIt\fR);
 .br
-extern int \fBtaia_pack\fP(char* buf,const struct taia* \fIt\fR);
+extern int \fBtaia_pack\fP(char *buf,const struct taia *\fIt\fR);
 .br
-extern int \fBtaia_sub\fP(struct taia* \fIt\fR,const struct taia* \fIa\fR,const struct taia* \fIb\fR);
+extern int \fBtaia_sub\fP(struct taia *\fIt\fR,const struct taia *\fIa\fR,const struct taia *\fIb\fR);
 .br
-extern int \fBtaia_tai\fP(const struct taia* \fIt\fR,struct tai* \fIsec\fR);
+extern int \fBtaia_tai\fP(const struct taia *\fIt\fR,struct tai *\fIsec\fR);
 .br
-extern int \fBtaia_uint\fP(struct taia* \fIt\fR,unsigned int \fIsecs\fR);
+extern int \fBtaia_uint\fP(struct taia *\fIt\fR,unsigned int \fIsecs\fR);
 .br
-extern int \fBtaia_unpack\fP(const char* buf,struct taia* \fIt\fR);
+extern int \fBtaia_unpack\fP(const char *buf,struct taia *\fIt\fR);
 .SH DESCRIPTION
 .B taia_add 
 adds \fIa\fR to \fIb\fR and writes the result to \fIt\fR.

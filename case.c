@@ -3,7 +3,7 @@
 
 /**
 	@file case.c
-	@auther djb
+	@author djb
 	@brief	string comparison and helper functions; case insensitive
 */
 

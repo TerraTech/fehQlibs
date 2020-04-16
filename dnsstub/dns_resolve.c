@@ -22,9 +22,9 @@ int dns_resolve(const char *q,const char qtype[2])
   iopause_fd x[1];
   int r;
 
-  if (dns_resolvconfip(servers,scopes) == -1) return -1;
+  if (dns_resolvconfip(servers,scopes) < 0) return DNS_INT;
 
-  if (dns_transmit_start6(&dns_resolve_tx,servers,1,q,qtype,(const char *)V6localnet,scopes) == -1) return -1;
+  if (dns_transmit_start6(&dns_resolve_tx,servers,1,q,qtype,(const char *)V6localnet,scopes) < 0) return DNS_COM;
 
   for (;;) {
     taia_now(&stamp);
@@ -32,9 +32,9 @@ int dns_resolve(const char *q,const char qtype[2])
     taia_add(&deadline,&deadline,&stamp);
     dns_transmit_io(&dns_resolve_tx,x,&deadline);
     r = iopause(x,1,&deadline,&stamp);
-    if (r < 0) return -1;
+    if (r < 0) return DNS_COM;
     r = dns_transmit_get(&dns_resolve_tx,x,&stamp);
-    if (r == -1) return -1;
+    if (r < 0) return DNS_COM;
     if (r == 1) return 0;
   }
 }

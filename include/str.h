@@ -11,7 +11,7 @@
 extern unsigned int str_copy(char *,char *);
 extern unsigned int str_copyb(char *,char *,unsigned int);
 extern int str_diff(char *,char *);
-extern int str_diffn(char *,char *, unsigned int);
+extern int str_diffn(char *,char *,unsigned int);
 //extern unsigned int str_len(char *);  // --> this produces lot of warnings !!!
 extern unsigned int str_len();
 extern unsigned int str_chr(char *,int);

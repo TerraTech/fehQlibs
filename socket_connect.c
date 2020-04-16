@@ -9,7 +9,7 @@
 
 /**
 	@file socket_connect.c
-	@auther djb, fefe, feh, kp
+	@author djb, fefe, feh, kp
 	@source qmail, ucscpi-tcp6
 	@brief connection to remote IP host
 */
@@ -47,7 +47,7 @@ int socket_connect4(int s,const char ip[4],uint16 port)
 
 int socket_connect(int s,const char ip[16],uint16 port,uint32 scope_id)
 {
-  if ((ipv4socket = ip6_isv4mapped(ip)))
+  if (ipv4socket || ip6_isv4mapped(ip))
     return socket_connect4(s,ip+12,port);
 
   return socket_connect6(s,ip,port,scope_id);

@@ -5,7 +5,7 @@
 
 /**
 	@file ip4.c
-	@auther djb, fefe, feh, kp
+	@author djb, fefe, feh, kp
 	@source ucspi-tcp, ucspi-tcp6 
 	@brief handling of IPv4 addresses
 */
@@ -31,6 +31,31 @@ unsigned int ip4_fmt(char *s,char ip[4])
   i = fmt_ulong(s,(unsigned long) (unsigned char) ip[2]); len += i; if (s) s += i;
   if (s) { *s++ = '.'; } ++len;
   i = fmt_ulong(s,(unsigned long) (unsigned char) ip[3]); len += i; if (s) s += i;
+  return len;
+}
+
+/**
+ @brief ia4_fmt
+        converts IPv4 address into DNS inverse nibble format
+ @param input:  IPv4 char array
+        output: IPv4 address string
+ @return int length of address (ok > 0)
+ */
+
+unsigned int ia4_fmt(char *s,char ip[4])
+{
+  unsigned int i;
+  unsigned int len;
+
+  len = 0;
+  i = fmt_ulong(s,(unsigned long) ip[3]); len += i; if (s) s += i;
+  i = fmt_str(s,"."); len += i; if (s) s += i;
+  i = fmt_ulong(s,(unsigned long) ip[2]); len += i; if (s) s += i;
+  i = fmt_str(s,"."); len += i; if (s) s += i;
+  i = fmt_ulong(s,(unsigned long) ip[1]); len += i; if (s) s += i;
+  i = fmt_str(s,"."); len += i; if (s) s += i;
+  i = fmt_ulong(s,(unsigned long) ip[0]); len += i; if (s) s += i;
+  i = fmt_str(s,".in-addr.arpa."); len += i; if (s) s += i;
   return len;
 }
 
@@ -61,22 +86,6 @@ unsigned int ip4_scan(const char *s,char ip[4])
 }
 
 /**
- @brief ip_scan (compatibility version)
-        parse IPv4 address string and convert to IP address array
- @param input:  IPv4 address string (2nd argument)
-        output: IPv4 char array
- @return int lenth of ip_address (ok > 0)
- */
-
-unsigned int ip_scan(char *s,char *ip)
-{
-  if (str_chr(s,':')) 
-    return ip6_scan(s,ip);
-  else
-    return ip4_scan(s,ip);
-}
-
-/**
  @brief ip4_scanbracket
         parse IPv4 address string enclosed in brackets and convert to IP address array
  @param input:  IPv4 char array
@@ -90,25 +99,6 @@ unsigned int ip4_scanbracket(const char *s,char ip[4])
 
   if (*s != '[') return 0;
   len = ip4_scan(s + 1,ip);
-  if (!len) return 0;
-  if (s[len + 1] != ']') return 0;
-  return len + 2;
-}
-
-/* scan IPv4 or IPv6 ip address enclosed in brackets */
-// temp., not "enough" tested yet !!!
-
-unsigned int ip_scanbracket(char *s,char *ip_str)
-{
-  unsigned int len;
-
-  if (*s != '[') return 0;
-  if (str_chr(ip_str,':')) {
-     len = ip6_scan(s + 1,ip_str);
-  } else {
-     len = ip4_scan(s + 1,ip_str);
-  }
-
   if (!len) return 0;
   if (s[len + 1] != ']') return 0;
   return len + 2;

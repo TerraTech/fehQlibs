@@ -2,6 +2,11 @@
 #define DNSRESOLV_H
 
 /*
+ *  Revision 20190730, Erwin Hoffmann
+ *  - revised DNS_* return codes to make them compliant with ucspi-*
+ *  Revision 20190430, Erwin Hoffmann
+ *  - added DNS_SOFT/HARD/MEM complient to s/qmail
+ *  - code changes in all decendent modules
  *  Revision 20180222, Erwin Hoffmann
  *  - we consider in total 32 NS IPs (IPv4 + IPv6)
  *  - added dns_transmit_start6
@@ -20,11 +25,18 @@
 #include "iopause.h"
 #include "taia.h"
 
-// #define MSGSIZE MTUSIZE       /* aggressive */
-#define MSGSIZE 512		/* RFC 1035 */
+/* Note: The conventions are subject of change in forthcoming versions */
 
-#define QUERY_MAXNS 32					/* 16 IPv4 + 16 IPv6 NS */
-#define QUERY_MAXIPLEN 512			/* QUERY_MAXNS * 16 */
+#define DNS_MEM  -1
+#define DNS_ERR  -2              /* parsing errors and others */
+#define DNS_COM  -4              /* (socket) communication errors */
+#define DNS_INT  -4              /* internal errors */
+
+#define MSGSIZE MTUSIZE       /* aggressive */
+// #define MSGSIZE 512              /* RFC 1035 */
+
+#define QUERY_MAXNS 32           /* 16 IPv4 + 16 IPv6 NS */
+#define QUERY_MAXIPLEN 512       /* QUERY_MAXNS * 16 */
 
 /* Note: These following definitions are subject of change */
 
@@ -137,6 +149,9 @@ extern int dns_ip6_qualify(stralloc *,stralloc *,const stralloc *);
 #define DNS_NAME6_DOMAIN (4*16+11)
 extern int dns_name6_domain(char *,const char *);
 extern int dns_name6(stralloc *,const char *);
+
+extern int dns_cname_packet(stralloc *,const char *,unsigned int);
+extern int dns_cname(stralloc *,stralloc *);
 
 extern int dns_transmit_start6(struct dns_transmit *,const char *,int,const char *,const char *,const char *,const uint32 *);
 

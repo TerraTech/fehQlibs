@@ -58,11 +58,3 @@ Two main archives are generated:
 - (lib)qlibs.a  -- including all above, except for
 - (lib)dnsresolv.a  -- routines located at ./dnsstub.
 
-Upon calling 'make share' the following 'PIC' shared libs are provided:
-
-- libqlibs.so
-- libdnsresolv.so
-
-
-
-

@@ -3,7 +3,7 @@
 
 /**
 	@brief ndelay.h
-	@auther djb, feh
+	@author djb, feh
 	@source s/qmail
 */
 

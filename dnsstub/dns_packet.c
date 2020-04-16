@@ -53,8 +53,7 @@ unsigned int dns_packet_getname(const char *buf,unsigned int len,unsigned int po
     if (state) {
       if (namelen + 1 > sizeof(name)) goto PROTO; name[namelen++] = ch;
       --state;
-    }
-    else {
+    } else {
       while (ch >= 192) {
         where = ch; where -= 192; where <<= 8;
         if (pos >= len) goto PROTO; ch = buf[pos++];

@@ -11,8 +11,10 @@ typedef struct buffer {
 } buffer;
 
 #define BUFFER_INIT(op,fd,buf,len) { (buf), 0, (len), (fd), (op) }
+#define BUFFER_SMALL 256
 #define BUFFER_INSIZE 8192
 #define BUFFER_OUTSIZE 8192
+#define BUFFER_MTUSIZE 1450
 
 extern void buffer_init(buffer *,ssize_t (*op)(),int,char *,size_t);
 
@@ -54,5 +56,8 @@ extern ssize_t buffer_unixwrite(int,char *,size_t);
 extern buffer *buffer_0;
 extern buffer *buffer_1;
 extern buffer *buffer_2;
+extern buffer *buffer_0small;
+extern buffer *buffer_1small;
+extern buffer *buffer_2small;
 
 #endif

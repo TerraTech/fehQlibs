@@ -11,15 +11,23 @@ buffer* buffer_1;   /* like stdio's stdout */
 buffer* buffer_2;   /* like stdio's stderr */
 
 void \fBbuffer_init\fR(buffer &\fIb\fR,ssize_t (*\fIop\fR)(int,char*,size_t),
-                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
+                int \fIfd\fR, char *\fIy\fR, size_t \fIylen\fR);
 .br
-ssize_t \fBbuffer_get\fP(buffer* \fIb\fR,char* \fIx\fR,size_t \fIlen\fR);
+ssize_t \fBbuffer_get\fP(buffer* \fIb\fR,char *\fIx\fR,size_t \fIlen\fR);
 
-int \fBbuffer_put\fP(buffer* \fIb\fR,const char* \fIx\fR,size_t \fIlen\fR);
+int \fBbuffer_put\fP(buffer* \fIb\fR,const char *\fIx\fR,size_t \fIlen\fR);
 .br
-int \fBbuffer_putalign\fP(buffer* \fIb\fR,char* \fIx\fR,unsigned int \fIlen\fR);
+int \fBbuffer_puts\fP(buffer* \fIb\fR,const char *\fIx\fR);
 .br
-int \fBbuffer_putsalign\fP(buffer* \fIb\fR,char* \fIx\fR);
+int \fBbuffer_putalign\fP(buffer* \fIb\fR,char *\fIx\fR,unsigned int \fIlen\fR);
+.br
+int \fBbuffer_putsalign\fP(buffer* \fIb\fR,char *\fIx\fR);
+
+int \fBbuffer_putflush\fP(buffer* \fIb\fR,char *\fIx\fR,unsigned int \fIlen\fR);
+.br
+int \fBbuffer_putsflush\fP(buffer* \fIb\fR,char *\fIx\fR);
+
+
 
 .SH DESCRIPTION
 .B buffer.h 
@@ -34,8 +42,7 @@ Unlike
 .BR stdio ,
 these write buffers are not flushed automatically at
 program termination; you must manually call \fBbuffer_flush\fR,
-\fBbuffer_putsflush\fR, \fBbuffer_putflush\fR or
-\fBbuffer_putnlflush\fR.
+\fBbuffer_putflush\fR, or \fBbuffer_putsflush\fR.
 
 .B buffer_init 
 prepares \fIb\fR to store a string in \fIy\fR[0], \fIy\fR[1], ...,

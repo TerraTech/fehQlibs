@@ -14,7 +14,7 @@
 
 /**
 	@file socket_udp.c
-	@auther djb, fefe, feh
+	@author djb, fefe, feh
 	@source ucspi-tcp6
 	@brief setup a UDP message socket
 */

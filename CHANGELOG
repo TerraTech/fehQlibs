@@ -3,3 +3,18 @@ fehQlibs-09:	First public release based on Qlibs as
 fehQlibs-10:	Added IPV6_V6ONLY setsockoptions call.
 		Improved poll handling in iopause.c considering poll RC.
 		Added building of shared libraries + updated docs.
+fehQlibs-11:	Added ia4_fmt, ia6_fmt and dns_cname (for *qmail).
+		Changed dns_transmit lookup time constants. 
+fehQlibs-12:	dns_ip, dns_cname, dns_txt, dns_name and dns_mx
+		return now the number of DNS answers received 
+		unlike the number of bytes for the given output. 
+		Added convenience routines for forthcoming s/qmail.
+fehQlibs-12a:	Fixed missing DNS A lookup in dns_ip.c.
+fehQlibs-12b:	Removed (one) obsolete return value check 
+		for iopause in timeoutconn.c.
+fehQlibs-12c:	Checking carefully all dnsstub return codes
+		while using a coherent scheme. 
+fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
+		UI changed:	log() -> log_who()
+		Added: man str(3)
+

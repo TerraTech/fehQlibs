@@ -4,7 +4,7 @@
 
 /**
 	@file env.c
-	@auther djb
+	@author djb
 	@source ucspi-tcp
 	@brief	setting up environment after fork
 */

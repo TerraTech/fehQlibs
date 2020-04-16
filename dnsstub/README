@@ -42,6 +42,15 @@ specified within $LOCALDOMAIN separated by blanks.
 
 See: https://cr.yp.to/djbdns/qualify.html
 
+
+Specific DNS Record type lookup:
+
+* dns_ip (A, AAAAA)
+* dns_name (PTR)
+* dns_cname (CNAME)
+* dns_txt (TXT)
+* dns_mx (MX)
+
 Internals:
 
 * UDP message size:
@@ -50,7 +59,7 @@ sizes up to 1028 byte without the need for (E)DNS0 packet enhancements.
 
 * DNS UDP query retrials:
 In case the NS is not able to initally reply to the query, 
-it is retried again at the intervalls {3, 9, 27, 81} secs.
+it is retried again at the intervalls {1, 2, 4, 8, 16} secs.
 
 * NS qualification/sorting for NS replies:
 NS qualification is not supported (yet), thus we use a randomly sorted
@@ -61,6 +70,42 @@ In case ipv4socket > 0; only NS with IPv4 addresses are considered.
 Neither message (CurveDNS) nor transport layer (TLS) encryption is provided;
 the sub-resolver 'trusts' it's upstream caches/forwarders. We recommend to
 setup communication on private IPv4/IPv6 addresses; if applicable.
+
+* Return Codes:
+Different from DJB's initial routines, the DNS front-end routines
+  dns_cname*, dns_ip*, dns_mx*, dns_name*, dns dns_txt* 
+return now the number of replies received (not bytes!). 
+Thus, three cases need to be considere:
+
+ - rc <  0: Problem occured (SOFTFAIL, HARDFAIL)
+ - rc =  0: No answer obtained (but query was successful) = NXDOMAIN
+ - rc >  0: rc answers received; positive reply
+
+For return codes < 0, the following conventions have been applied:
+
+	include/dnsresolv.h
+
+#define DNS_MEM  -1
+#define DNS_ERR  -2              /* parsing errors and others */
+#define DNS_COM  -3              /* (socket) communication errors */
+#define DNS_INT  -4              /* internal errors */
+
+The modification of the return code is typically not problematic,
+since mostly just rc = -1 is checked.
+
+In the future, these return codes are subject of change. 
+Thus, instead of
+
+   if (dns_XX(...) == -1) 
+
+one shoud use the more general syntax
+
+   if (dns_XX(...) < 0)
+
+to check for 'negative' results, allowing further actions
+and refinements given the calling sequence.
+
+In this (fehQlibs-12x) version, return codes are stil checked for '-1'.
 
 
 Environment Variables Read:
@@ -73,4 +118,4 @@ $LOCALDOMAIN 	Additional local domain name appended to unqualified
 	hostnames dynamically. 
 
 
-Erwin Hoffmann, August 2018.
+Erwin Hoffmann, September 2019.

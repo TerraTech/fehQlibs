@@ -9,10 +9,20 @@
 
 /**
 	@file cdbread.c
-	@auther djb
-	@source ucspi-tcp
-	@brief entries into a cdb 
+	@author djb
+	@source ucspi-tcp, fastforward
+	@brief read entries from a cdb 
 */
+
+uint32 cdb_unpack(unsigned char *buf)
+{
+  uint32 num;
+  num = buf[3]; num <<= 8;
+  num += buf[2]; num <<= 8;
+  num += buf[1]; num <<= 8;
+  num += buf[0];
+  return num;
+}
 
 void cdb_free(struct cdb *c)
 {
@@ -40,8 +50,8 @@ void cdb_init(struct cdb *c,int fd)
     if (st.st_size <= 0xffffffff) {
       x = mmap(0,st.st_size,PROT_READ,MAP_SHARED,fd,0);
       if (x + 1) {
-    c->size = st.st_size;
-    c->map = x;
+        c->size = st.st_size;
+        c->map = x;
       }
     }
 }

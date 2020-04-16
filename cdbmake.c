@@ -7,7 +7,7 @@
 
 /**
 	@file	cdbmake.c
-	@auther djb
+	@author djb
 	@source ucspi-tcp
 	@brief constant data base (cdb) generation
 */

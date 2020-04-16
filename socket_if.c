@@ -7,7 +7,7 @@
 
 /**
 	@file socket_if.c
-	@auther fefe, feh
+	@author fefe, feh
 	@source ucspi-tcp6
 	@brief interface handling for LLU
 */

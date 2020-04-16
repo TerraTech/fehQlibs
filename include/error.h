@@ -40,8 +40,11 @@ extern char *error_str(int);
 #define error_connreset     ECONNRESET    /*   -20     104      54     131    */
 
 /* djb uses some internal application error and class definitions -- revised (feh) */
-#define LOG     -90		/* generic logging */
-#define INFO    -98   /* named logging */
+#define CAT     -10   /* raw message w/o terminating \n */
+#define LOG     -90   /* generic logging */
+#define INFO    -91   /* named logging */
+#define TEMP    -97   /* (triggered) temporay alert condition */
+#define ALERT   -98   /* (triggered) alert condition */
 #define WARN    -99   /* exception condition */
 #define ESOFT  -100   /* soft error, reversed negative */
 #define EHARD  -111   /* hard error, reversed negative */

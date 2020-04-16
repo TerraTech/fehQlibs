@@ -8,7 +8,7 @@
 
 /**
 	@file socket_info.c
-	@auther djb, fefe, feh
+	@author djb, fefe, feh
 	@source ucspi-tcp6
 	@brief querying local and remote info for socket
 */

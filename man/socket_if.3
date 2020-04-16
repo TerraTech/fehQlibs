@@ -4,9 +4,9 @@ socket_if \- retrieve scope_id for interface name and vice versa
 .SH SYNTAX
 .B #include \(dqsocket_if.h\(dq
 
-uint32 \fBsocket_getifidx\fP(const char* \fIifname\fR);
+uint32 \fBsocket_getifidx\fP(const char *\fIifname\fR);
 
-const char* \fBsocket_getifname\fP(uint32 \fIscope_id\fR);
+const char *\fBsocket_getifname\fP(uint32 \fIscope_id\fR);
 .SH DESCRIPTION
 .B socket_getifidx
 returns the \fIscope_id\fR of an interface named as
@@ -80,11 +80,12 @@ parsing functions.
 IPv4 and IPv6 socket calls are distinguished by
 means of setting the variable
 .IR ipv4socket .
-Typically, this is facilitated by means of:
+Typically, this is facilitated intrinsically by means of:
 
 .EX
   ipv4socket = ip6_isv4mapped(ip);
 .EE
+
 .SH "SEE ALSO" 
 socket_bind(3), 
 socket_connect(3), 

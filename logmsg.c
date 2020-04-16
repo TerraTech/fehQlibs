@@ -9,14 +9,12 @@
 
 /**
 	@file logmsg.c
-	@auther kp, feh
+	@author kp, feh
 	@source qlibs
 	@brief unified system and error message handling
 */
 
 #define WHO "logmsg"
-
-unsigned int loglevel;
 
 char *build_log_msg(char *x[])
 {
@@ -24,7 +22,7 @@ char *build_log_msg(char *x[])
   stralloc_copys(&sa,"");  
 
   while(*x) { if (!stralloc_cats(&sa,*x++)) err_sys(WHO,errno); } /* concatenate *x */
-
+  
   if (!stralloc_0(&sa)) err_sys(WHO,errno);
   return(sa.s);
 }
@@ -57,10 +55,13 @@ void logmsg(char *who,int ecode,unsigned int class,char *msg)
     case ERROR:  classstr = "error: ";    break;   // info + exit
     case FATAL:  classstr = "fatal: ";    break;   // info + exit 
     case DROP:   classstr = "drop: ";     break;   // info + next call/iteration
-    case WARN:   classstr = "warn: ";     break;   // info + next statement
+    case ALERT:  classstr = "alert: ";    break;   // info + next statement
+    case WARN:   classstr = "warning: ";  break;   // info + next statement
     case INFO:   classstr = "info: ";     break;   // info + continue
     case SYNTAX: classstr = "syntax: ";   break;   // info + exit
     case USAGE:  classstr = "usage: ";    break;   // info + exit
+    case TEMP:   classstr = "temp: ";    break;   // info + exit
+    case CAT:    classstr = "";	          break;   // info w/o \n
     default: 
       class = LOG; classstr =  "";        break;   // custom info + continue
   }
@@ -85,8 +86,10 @@ void logmsg(char *who,int ecode,unsigned int class,char *msg)
     buffer_puts(buffer_2,": ");
     buffer_puts(buffer_2,errmsg);
   }
-  buffer_puts(buffer_2,"\n");
-  buffer_flush(buffer_2);
+  if (class != CAT) {
+    buffer_puts(buffer_2,"\n");
+    buffer_flush(buffer_2);
+  }
 
   if (class == USAGE) _exit(USAGE); 
   if (class == SYNTAX) _exit(SYNTAX); 

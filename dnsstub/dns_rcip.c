@@ -48,9 +48,9 @@ static int init(char ip[QUERY_MAXIPLEN],uint32 sid[QUERY_MAXNS])
 
   if (!iplen) {
     i = openreadclose("/etc/resolv.conf",&data,64);
-    if (i == -1) return -1;
+    if (i == -1) return DNS_INT;
     if (i) {
-      if (!stralloc_append(&data,"\n")) return -1;
+      if (!stralloc_append(&data,"\n")) return DNS_MEM;
       i = 0;
       for (j = 0; j < data.len; ++j)
         if (data.s[j] == '\n') {
@@ -100,7 +100,7 @@ int dns_resolvconfip(char s[QUERY_MAXIPLEN],uint32 scope[QUERY_MAXNS])
   if (!uses) ok = 0;
 
   if (!ok) {
-    if (init(ip,scopes) == -1) return -1;
+    if (init(ip,scopes) == -1) return DNS_INT;
     taia_uint(&deadline,600);
     taia_add(&deadline,&now,&deadline);
     uses = 10000;

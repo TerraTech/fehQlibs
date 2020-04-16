@@ -2,7 +2,7 @@
 
 /**
 	@file uint128p.c
-	@auther feh, jannis
+	@author feh, jannis
 	@source djbdns6
 	@brief packing/unpacking 128 bit integer to/from char string
 */

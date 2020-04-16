@@ -3,7 +3,7 @@
 
 /**
 	@file str.c
-	@auther djb
+	@author djb
 	@source qmail
 	@brief string handling functions
 */
@@ -30,10 +30,10 @@ unsigned int str_copy(register char *s,register char *t)
 
   len = 0;
   for (;;) {
-    if (!(*s = *t)) { return len; ++s; ++t; ++len; }
-    if (!(*s = *t)) { return len; ++s; ++t; ++len; }
-    if (!(*s = *t)) { return len; ++s; ++t; ++len; }
-    if (!(*s = *t)) { return len; ++s; ++t; ++len; }
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len; 
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
   }
 }
 

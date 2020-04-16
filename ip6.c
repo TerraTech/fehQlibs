@@ -6,7 +6,7 @@
 
 /**
 	@file ip6.c
-	@auther djb, fefe, feh
+	@author djb, fefe, feh
 	@source ucspi-tcp, ucspi-tcp6
 	@brief handling of IPv6 addresses
 */
@@ -92,6 +92,36 @@ unsigned int ip6_fmt_flat(char *s,char ip[16])
   }
   return 32;
 }
+
+/***
+ @brief ia6_fmt
+        convert IPv6 address to inverse DNS nibble format
+        1.2.3.4.5.6.7.8.9.a.b.c.d.e.f.1.2.3.4.5.6.7.8.9.a.b.c.d.e.f.ip6.arpa 
+ @param input:  IPv6 char array
+        output: pointer to IPv6 address string
+ @return int length of address 
+ */
+
+unsigned int ia6_fmt(char *s,char ip[16])
+{
+  unsigned int i;
+  unsigned int len;
+  int j;
+
+  static char data[] = "0123456789abcdef";
+  len = 0;
+
+  for (j = 15; j >= 0; j--) {
+    i = fmt_str(s,&data[ip[j] & 0x0f]); len += i; if (s) s += i;
+    i = fmt_str(s,"."); len += i; if (s) s += i;
+    i = fmt_str(s,&data[ip[j] >> 4 & 0x0f]); len += i; if (s) s += i;
+    i = fmt_str(s,"."); len += i; if (s) s += i;
+  }
+  i = fmt_str(s,"ip6.arpa."); len += i; if (s) s += i;
+
+  return len;
+}
+
 
 /***
  @brief ip6_scan_flat

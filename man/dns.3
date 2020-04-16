@@ -4,37 +4,41 @@ dns \- dns resolver routines
 .SH SYNTAX
 .B #include \(dqdnsresolv.h\(dq
 
-int \fBdns_ip4_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR);
+int \fBdns_ip4_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
 .br
-int \fBdns_ip4_qualify\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR,const stralloc* \fIudn\fR);
+int \fBdns_ip4_qualify\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR,const stralloc *\fIudn\fR);
 .br
-int \fBdns_ip4\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
+int \fBdns_ip4\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR);
 
-int \fBdns_ip6_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR);
+int \fBdns_ip6_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
 .br
-int \fBdns_ip6_qualify\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR,const stralloc* \fIudn\fR);
+int \fBdns_ip6_qualify\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR,const stralloc *\fIudn\fR);
 .br
-int \fBdns_ip6\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
+int \fBdns_ip6\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR);
 
-int \fBdns_mx\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
+int \fBdns_mx\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR);
 .br
-int \fBdns_mx_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR);
+int \fBdns_mx_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
 
-void \fBdns_name4_domain\fP(char \fIq\fR[DNS_NAME4_DOMAIN],const char* \fIip\fR[4]);
+void \fBdns_name4_domain\fP(char \fIq\fR[DNS_NAME4_DOMAIN],const char *\fIip\fR[4]);
 .br
-int \fBdns_name4\fP(stralloc* \fIout\fR,const char* \fIip\fR[4]);
+int \fBdns_name4\fP(stralloc *\fIout\fR,const char *\fIip\fR[4]);
 
-void \fBdns_name6_domain\fP(char \fIq\fR[DNS_NAME6_DOMAIN],const char* \fIip\fR[16]);
+void \fBdns_name6_domain\fP(char \fIq\fR[DNS_NAME6_DOMAIN],const char *\fIip\fR[16]);
 .br
-int \fBdns_name6\fP(stralloc* \fIout\fR,const char* \fIip\fR[16]);
+int \fBdns_name6\fP(stralloc *\fIout\fR,const char *\fIip\fR[16]);
 
-int \fBdns_name\fP(stralloc* \fIout\fR,const char* \fIip\fR[16]);
+int \fBdns_name\fP(stralloc *\fIout\fR,const char *\fIip\fR[16]);
 .br
-int \fBdns_name_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR);
+int \fBdns_name_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
 
-int \fBdns_txt\fP(stralloc* \fIout\fR,stralloc* \fIfqdn\fR);
+int \fBdns_txt\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR);
 .br
-int \fBdns_txt_packet\fP(stralloc* \fIout\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR);
+int \fBdns_txt_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
+
+int \fBdns_cname\fP(stralloc *\fIout\fR,stralloc *\fIfqdn\fR);
+.br
+int \fBdns_cname_packet\fP(stralloc *\fIout\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR);
 .SH DESCRIPTION
 .B dns_ip4_packet 
 is a low-level component of 
@@ -70,11 +74,12 @@ is a low-level component of
 designed to support asynchronous DNS lookups. 
 It reads a DNS packet of length \fIlen\fR from \fIbuf\fR, 
 extracts IPv4 and IPv6 addresses from the answer section of the packet, 
-puts the addresses into \fIout\fR, and returns \fI0\fR or \fI-1\fR the same way as 
+puts the addresses into \fIout\fR, and returns the number of replies received,
+which of course may be \fI0\fR or \fI-1\fR in case of memory shortage in the same way as 
 .BR dns_ip6 .
 
 .B dns_ip6_qualify 
-feeds the name \fIudn\fR through qualification and looks up
+feeds the name \fIudn\fR through qualification and looks up the
 16-byte IPv6 addresses for the result. It puts the fully qualified domain name
 into \fIfqdn\fR, puts the concatenation of the IP addresses into \fIout\fR, and
 returns \fI0\fR. If the domain does not exist in DNS, or has no IP addresses,
@@ -110,7 +115,8 @@ DNS, or has no MX records, \fIout\fR will be empty.
 is a low-level component of dns_mx, designed to support
 asynchronous DNS lookups. It reads a DNS packet of length \fIlen\fR from \fIbuf\fR,
 extracts the MX records from the answer section of the packet, puts the
-result into \fIout\fR, and returns \fI0\fR or \fI-1\fR the same way as 
+result into \fIout\fR, and returns the number of replies received 
+or \fI-1\fR the same way as 
 .BR dns_mx .
 
 .B dns_name4_domain 
@@ -170,8 +176,8 @@ result into \fIout\fR.
 .B dns_txt 
 looks up TXT records for the fully-qualified domain name in
 \fIfqdn\fR. It puts the concatenation of the TXT records into \fIout\fR
-and returns \fI0\fR.  If the domain does not exist in DNS, or has no TXT
-records, \fIout\fR will be empty.
+and returns the number of replies received.  
+If the domain does not exist in DNS, or has no TXT records, \fIout\fR will be empty.
 
 .B dns_txt_packet 
 is a low-level component of 
@@ -179,9 +185,52 @@ is a low-level component of
 designed to support
 asynchronous DNS lookups. It reads a DNS packet of length \fIlen\fR from \fIbuf\fR,
 extracts the TXT records from the answer section of the packet, puts the
-result into \fIout\fR, and returns \fI0\fR or \fI-1\fR the same way as \fIdns_txt\fR.
+result into \fIout\fR, and returns the number of replies 
+or \fI-1\fR the same way as \fBdns_txt\fR.
+
+.B dns_cname
+looks up the canonical name for a given
+.IR fqdn .
+
+.B dns_cname_packet 
+is a low-level component of 
+.BR dns_cname ,
+designed to support
+asynchronous DNS lookups. It reads a DNS packet of length \fIlen\fR from \fIbuf\fR,
+extracts the TXT records from the answer section of the packet, puts the
+result into \fIout\fR, and returns the number of replies received  or
+\fI-1\fR the same way as \fBdns_cname\fR.
+.SH "INPUT"
+For the high-level routines
+.BR dns_ip4 ,
+.BR dns_ip6 ,
+.BR dns_mx ,
+.BR dns_name4 ,
+.BR dns_name6 ,
+.BR dns_name ,
+.BR dns_txt 
+and 
+.BR dns_cname
+the provided input variable
+.I stralloc \*\fqdn
+needs to be un-terminated, thus the given
+string length is identitical to the number of 
+.I fqdn 
+characters.
 .SH "RETURN CODES"
-The dns routines return
+The dns routines 
+.BR dns_cname* ,
+.BR dns_ip* ,
+.BR dns_mx* ,
+.B dns_name*
+and
+.BR dns_txt*
+return the number of answers received, which may be 
+.I 0 
+and potentially
+.I -1
+in case of a memory failure.
+The other dns routines simply return
 .I 0
 in case of a successful operation. 
 In case the DNS lookup fails or the routine runs out of memory, 

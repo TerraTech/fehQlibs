@@ -2,12 +2,13 @@
 #define SOCKETIF_H
 
 /*
- *  Revision 20171229, Erwin Hoffmann
+ *  Revision 20181125, Erwin Hoffmann
  *  - switched to 'uint_t.h'
  *  - changed 'socket_tcp' --> 'socket_tcp4', 'socket_udp' --> 'socket_udp4'
  *  - added 'socket_ip6optionskill'
  *  - reordered and included backword compatible IPv6 calls
  *  - commented multicast socket declarations
+ *  - enlarged usage for ipv4socket -> dual bind IPv4/IPv6
 */
 
 #define __APPLE_USE_RFC_3542   /* MacOS Anycast support */
@@ -83,6 +84,17 @@ extern int socket_udp6(void);
 // extern int socket_mcloop6(int,char);
 /**************************************************************/
 
-extern int ipv4socket; /* required; former noipv6 */
+/************* ipv4socket *************************************/
+/* ipv4socket -> former noipv6                                */
+/*                                                            */
+/* ipv4socket = 0 -> IPv6 and dual-stack binding IPv6+IPv4    */
+/*                                                            */
+/* ipv4socket = 1 -> bind to IPv4                             */
+/*              IP = IPv6-mapped-IPv4 address recognized      */
+/*                                                            */
+/* ipv4socket = 2 -> force binding to IPv4 only               */
+/*                                                            */
+/**************************************************************/
+extern int ipv4socket; 
 
 #endif

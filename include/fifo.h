@@ -3,7 +3,7 @@
 
 /**
 	@file fifo.h
-	@auther djb, feh
+	@author djb, feh
 	@source s/qmail
 */
 

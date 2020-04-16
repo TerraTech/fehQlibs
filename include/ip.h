@@ -2,10 +2,13 @@
 #define IP_H
 
 /*
+ *  Revision 20190414, Erwin Hoffmann
+ *  - removed ip_scan and ip_scanbracket (comp. versions).
+ *  - added ia6_fmt and ia4_fmt (for qmail)
  *  Revision 20180314, Erwin Hoffmann
  *  - ip4_cidr added and argument list changed (also for ip6_cidr)
  *  Revision 20180213, Erwin Hoffmann
- *  - ip4_scan/ip6_scan/ip4_scanbracket/ip6_scanbracket/ip6_fmt_flat revised
+ *  - ip4_scan/ip6_scan/ip4_scanbracket/ip6_fmt_flat revised
  *  Revision 20180206, Erwin Hoffmann
  *  - added V6linklocal address
  *  Revision 20170319, Kai Peter
@@ -49,9 +52,7 @@ unsigned int ip4_cidr(char *,char [4],unsigned long *);
 unsigned int ip4_fmt(char *,char [4]);
 unsigned int ip4_scan(const char *,char [4]);
 unsigned int ip4_scanbracket(const char *,char [4]);
-
-unsigned int ip_scan(char *,char *);		/* compatibility version */
-unsigned int ip_scanbracket(char *,char *);	/* compatibility version */
+unsigned int ia4_fmt(char *,char [4]);
 
 const static char V4loopback[4] = {127,0,0,1};
 const static char V4localnet[4] = {0,0,0,0};
@@ -86,6 +87,7 @@ unsigned int ip6_ifscan(char *,char [16],stralloc *);
 unsigned int ip6_scan(const char *,char [16]);
 unsigned int ip6_scanbracket(const char *,char [16]);
 unsigned int ip6_scan_flat(const char *,char [16]);
+unsigned int ia6_fmt(char *,char [16]);
 
 const static unsigned char V4mappedprefix[12] = {0,0,0,0, 0,0,0,0, 0,0,0xff,0xff};
 const static unsigned char V6loopback[16] = {0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1};

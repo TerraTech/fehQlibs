@@ -2,7 +2,7 @@
 
 /**
 	@file errstr.c
-	@auther kp
+	@author kp
 	@source qlibs
 	@brief error output to log for different conditions and OS
 */
@@ -13,7 +13,7 @@ extern char *error_str(int);
 
 char *errstr(int code)
 {
-  X(0,"")  										                   // NOERROR
+  X(0,"")                                        // NOERROR
   X(error_intr,"interrupted system call")        // EINTR
   X(EINTR,            "interrupted system call")
   X(error_nomem,"out of memory")                 // ENOMEM

@@ -3,7 +3,7 @@
 
 /**
 	@file byte.h	
-	@auther djb, feh
+	@author djb, feh
 	@source s/qmail
 	@comment no declaration of argument types; too many compiler errors
 */

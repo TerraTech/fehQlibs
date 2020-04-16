@@ -22,6 +22,8 @@
 int ipv4socket;
 uint32 scope_ids[QUERY_MAXNS];
 
+static const int timeouts[5] = { 1, 2, 4, 8, 16 }; /* quadratic, not exponentially */
+ 
 int getscopeid(const struct dns_transmit *d,const char *ip)
 {
   int i;
@@ -30,6 +32,7 @@ int getscopeid(const struct dns_transmit *d,const char *ip)
   for (i = 0; i < QUERY_MAXNS; ++i) 
     if (byte_equal(d->servers + 16 * i,16,ip))  
       return scope_ids[i];
+
   return 0;
 }
 
@@ -39,6 +42,7 @@ int serverwantstcp(const char *buf,unsigned int len)
 
   if (!dns_packet_copy(buf,len,0,out,12)) return 1;
   if (out[2] & 2) return 1;
+
   return 0;
 }
 
@@ -51,6 +55,7 @@ int serverfailed(const char *buf,unsigned int len)
   rcode = out[3];
   rcode &= 15;
   if (rcode && (rcode != 3)) { errno = EAGAIN; return 1; }
+
   return 0;
 }
 
@@ -116,10 +121,9 @@ int randombind(struct dns_transmit *d)
 
   if (socket_bind(d->s1 - 1,d->localip,0,d->scope_id) == 0)
     return 0;
-  return -1;
-}
 
-static const int timeouts[5] = { 1, 3, 9, 27, 81 }; /* quadratic, not exponentially */
+  return DNS_COM;
+}
 
 int thisudp(struct dns_transmit *d)
 {
@@ -136,8 +140,8 @@ int thisudp(struct dns_transmit *d)
         d->query[3] = dns_random(256);
   
         d->s1 = 1 + socket_udp();
-        if (!d->s1) { dns_transmit_free(d); return -1; }
-        if (randombind(d) == -1) { dns_transmit_free(d); return -1; }
+        if (!d->s1) { dns_transmit_free(d); return DNS_COM; }
+        if (randombind(d) == -1) { dns_transmit_free(d); return DNS_COM; }
 
         if (byte_equal(ip,2,V6linklocal) && !d->scope_id) 
           d->scope_id = getscopeid(d,ip);
@@ -157,7 +161,7 @@ int thisudp(struct dns_transmit *d)
     d->curserver = 0;
   }
 
-  dns_transmit_free(d); return -1;
+  dns_transmit_free(d); return DNS_COM;
 }
 
 int firstudp(struct dns_transmit *d)
@@ -188,8 +192,8 @@ int thistcp(struct dns_transmit *d)
       d->query[3] = dns_random(256);
 
       d->s1 = 1 + socket_tcp();
-      if (!d->s1) { dns_transmit_free(d); return -1; }
-      if (randombind(d) == -1) { dns_transmit_free(d); return -1; }
+      if (!d->s1) { dns_transmit_free(d); return DNS_COM; }
+      if (randombind(d) == -1) { dns_transmit_free(d); return DNS_COM; }
   
       taia_now(&now);
       taia_uint(&d->deadline,10);
@@ -210,7 +214,8 @@ int thistcp(struct dns_transmit *d)
     }
   }
 
-  dns_transmit_free(d); return -1;
+  dns_transmit_free(d); 
+  return DNS_COM;
 }
 
 int firsttcp(struct dns_transmit *d)
@@ -236,7 +241,7 @@ int dns_transmit_start(struct dns_transmit *d,const char servers[QUERY_MAXIPLEN]
   len = dns_domain_length(q);
   d->querylen = len + 18;
   d->query = alloc(d->querylen);
-  if (!d->query) return -1;
+  if (!d->query) return DNS_COM;
  
   uint16_pack_big(d->query,len + 16);
   byte_copy(d->query + 2,12,flagrecursive ? "\0\0\1\0\0\1\0\0\0\0\0\0" : "\0\0\0\0\0\1\0\0\0\0\0\0gcc-bug-workaround");
@@ -319,7 +324,7 @@ have sent query to curserver on UDP socket s
 
     d->packetlen = r;
     d->packet = alloc(d->packetlen);
-    if (!d->packet) { dns_transmit_free(d); return -1; }
+    if (!d->packet) { dns_transmit_free(d); return DNS_COM; }
     byte_copy(d->packet,d->packetlen,udpbuf);
     queryfree(d);
     return 1;
@@ -379,7 +384,7 @@ have received one byte of packet length into packetlen
     d->tcpstate = 5;
     d->pos = 0;
     d->packet = alloc(d->packetlen);
-    if (!d->packet) { dns_transmit_free(d); return -1; }
+    if (!d->packet) { dns_transmit_free(d); return DNS_COM; }
     return 0;
   }
 

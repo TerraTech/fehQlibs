@@ -2,7 +2,7 @@
  
 /**
 	@file uint64p.c	
-	@authors feh, jannis
+	@author feh, jannis
 	@source djbdns6
 	@brief packing/unpacking 64 bit integer to/from char string
 */

@@ -1,0 +1,61 @@
+.TH qlibs: str 3
+.SH NAME
+str \- string evaluation and comparision (for allocated strings)
+.SH SYNTAX
+.B #include  \(dqstr.h\(dq
+
+unsigned int \fBstr_copy\fR(char *\fIdst\fR, char *\fIsrc\fR);
+.br
+unsigned int \fBstr_copyb\fR(char *\fIdst\fR, char *\fIsrc\fR, unsigned int \fIlen\fR);
+.br
+unsigned int \fBstr_chr\fR(char *\fIs\fR, int \fIc\fR);
+.br
+unsigned int \fBstr_rchr\fR(char *\fIs\fR, int \fIc\fR);
+.br
+unsigned int \fBstr_diff\fR(char *\fIs\fR, char *\fIt\fR);
+.br
+unsigned int \fBstr_diffn\fR(char *\fIs\fR, char *\fIt\fR, unsigned int \fIlen\fR);
+.br
+unsigned int \fBstr_equal\fR(char *\fIs\fR, char *\fIt\fR);
+.br
+unsigned int \fBstr_len\fP(const char *\fIs\fR);
+.br
+unsigned int \fBstr_starts\fP(char *\fIdst\fR, char *\fIsrc\fR);
+.br
+char *\fBstr_append\fP(char *\fIdst\fR, char *\fIs\fR);
+.SH DESCRIPTION
+\fBstr_copy\fR copies \fIsrc\fR into \fIdst\fR up to the first occurance of \\0 while including it. 
+It returns the number of bytes written. 
+If \fIdst\fR is smaller than \fIsrc\fR, \fBstr_copy\fR fills up \fIdst\fR 
+to its allocated size and returns the number of bytes it would have be written.
+\fBstr_copyb\fR copies \fIlen\fR bytes from \fIsrc\fR into \fIdst\fR.
+
+\fBstr_chr\fR and \fBstr_rchr\fR searches for a single character in a string 
+(from left-to-right or from right-to-left) and returns the position of 
+the \fIfirst\fR occurrance of \fIc\fR or the length \fIlen\fR of \fIs\fR.
+
+\fBstr_len\fR determines the length of a string. It returns the position 
+of the first occurance of \\0 in \fIs\fR.
+
+\fBstr_diff\fR, \fBstr_diffn\fR, and \fBstr_equal\fR compare two strings.
+\fBstr_diff\fR and \fBstr_diffn\fR returns negative, zero or positive, depending
+whether the string \fIs\fR[0], \fIs\fR[1], ..., \fIs\fR[n]=='\\0' is
+ASCII lexicographically smaller than, equal to, or greater than the string
+\fIt\fR[0], \fIt\fR[1], ..., \fIt\fR[m-1]=='\\0'. If the strings are different,
+both functions do not read bytes past the first difference.
+\fBstr_diffn\fR considers the strings equal if the first \fIn\fR characters match.
+
+\fBstr_equal\fR returns 1, if \fIs\fR and \fIt\fR match up to and including the
+first occurance of \\0 or returns 0 otherwise. It is the opposite of \fBstr_diff\fR.
+
+\fBstr_start\fR compares the two strings from the begining. 
+It returns 1 if \fIt\fR is a prefix of \fIs\fR or 0 otherwise.
+
+\fB*str_append\fR appends a single byte \fIs\fR to \fIout\fR given \fIout\fR
+is allocated with enough space. 
+.SH "NOTE"
+For the \fBstr_copy*\fR and \fB*str_append\fP commands \fIdst\fR 
+has to have a  preallocated space. 
+Otherwise the result may be unexpected. 
+.SH "SEE ALSO"
+byte(3), stralloc(3)

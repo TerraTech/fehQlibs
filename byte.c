@@ -2,7 +2,7 @@
 
 /**
 	@file	byte.c
-	@auther djb
+	@author djb
 	@brief byte manipulation functions
 */
 

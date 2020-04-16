@@ -8,7 +8,7 @@
 
 /**
   @file socket_setup.c
-  @authers djb, feh
+  @author djb, feh
   @source ucspi-tcp6
   @brief setup listening socket
 */

@@ -4,7 +4,7 @@
 
 /**
 	@file iopause.c
-	@auther djb
+	@author djb
 	@source qmail
 	@brief stateful reading from net
 */

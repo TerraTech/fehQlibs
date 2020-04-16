@@ -5,7 +5,7 @@
 
 /**
 	@file readclose.c
-	@auther kp
+	@author kp
 	@source qlibs
 	@brief This is the successor of the older 'slurpclose.c' file. The function
    'slurpclose'  is now called  'readclose_append'.  The other function

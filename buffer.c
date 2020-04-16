@@ -6,7 +6,7 @@
 
 /**
 	@file buffer.c
-	@auther djb
+	@author djb
 	@brief input/output routines
 */
 
@@ -33,9 +33,21 @@ char buffer_1_space[BUFFER_OUTSIZE];
 static buffer it1 = BUFFER_INIT(write,1,buffer_1_space,sizeof(buffer_1_space));
 buffer *buffer_1 = &it1;
 
-char buffer_2_space[256];
+char buffer_2_space[BUFFER_OUTSIZE];
 static buffer it2 = BUFFER_INIT(write,2,buffer_2_space,sizeof(buffer_2_space));
 buffer *buffer_2 = &it2;
+
+char buffer_0_small[BUFFER_SMALL];
+static buffer is0 = BUFFER_INIT(buffer_0_read,0,buffer_0_small,sizeof(buffer_0_small));
+buffer *buffer_0small = &is0;
+
+char buffer_1_small[BUFFER_SMALL];
+static buffer is1 = BUFFER_INIT(write,1,buffer_1_small,sizeof(buffer_1_small));
+buffer *buffer_1small = &is1;
+
+char buffer_2_small[BUFFER_SMALL];
+static buffer is2 = BUFFER_INIT(write,2,buffer_2_small,sizeof(buffer_2_small));
+buffer *buffer_2small = &is2;
 
 ssize_t buffer_unixread(int fd,char *buf,size_t len)
 {
@@ -95,7 +107,7 @@ int buffer_feed(buffer *s)
   return r;
 }
 
-int buffer_bget(buffer *s,char *buf,size_t len) 
+int buffer_bget(buffer *s,char *buf,size_t len)
 {
   int r;
 
@@ -111,7 +123,8 @@ int buffer_get(buffer *s,char *buf,size_t len)
 
   if (s->p > 0) return getthis(s,buf,len);
   if (s->n <= len) return oneread(s->op,s->fd,buf,len);
-  r = buffer_feed(s); if (r <= 0) return r;
+  r = buffer_feed(s); 
+  if (r <= 0) return r;
   return getthis(s,buf,len);
 }
 

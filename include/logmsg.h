@@ -18,8 +18,10 @@ extern void logmsg(char *who, int ecode, unsigned int class, char *msg);
 #define err_int(w,e,c) logmsg(w,e,c,"")
 #define err_int_plus(w,e,c,m) logmsg(w,e,c,m)
 /* log messages */
-#define log(w,m) logmsg(w,0,LOG,m)
+/* #define log(w,m) logmsg(w,0,LOG,m) // obsoleted by */
+#define log_who(w,m) logmsg(w,0,LOG,m)
 #define log_anon(m) logmsg("",0,LOG,m)
+#define log_cat(n) logmsg("",0,CAT,m)
 
 /* build log message from multiple partial strings */
 extern char *build_log_msg(char *[]);

@@ -4,13 +4,13 @@ socket_send \- sending data over a UDP socket
 .SH SYNTAX
 .B #include \(dqsocket_if.h\(dq
 
-int \fBsocket_send4\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+int \fBsocket_send4\fP(int \fIs\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR,
                      const char \fIip\fR[4],uint16 \fIport\fR);
 .br
-int \fBsocket_send6\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+int \fBsocket_send6\fP(int \fIs\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR,
                      const char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
 .br
-int \fBsocket_send\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+int \fBsocket_send\fP(int \fIs\fR,const char *\fIbuf\fR,unsigned int \fIlen\fR,
                     const char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
 .SH DESCRIPTION
 .B socket_send4 
