@@ -20,4 +20,8 @@ fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
 fehQlibs-13a: Fixed wrong input boundary checking for multiple
 	DNSCACHE variables settings in dns_rcip.c. (Tx. J.W.)
 fehQlibs-13b:	Added missing str_copyb() function in str.c.
-fehQlibs-13c: DNS stub return codes straightend with djbdnscurve6-36.
+fehQlibs-13c: iopause it RC < 0 forces end of connection loop.
+	DNS stub return codes straightend with djbdnscurve6-36.
+fehQlibs-13d: Fixed integration bugs not displaying IPv6 addresses
+	(dns_ip.c, dns_mx.c).
+	Wrong dependency check in Makefile for SHAREDLIBS (tx. Alan C.). 

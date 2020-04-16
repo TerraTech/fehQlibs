@@ -55,7 +55,7 @@ on the result.
 .B ip6_ifscan
 reads the compactified IPv6 address string appended with the
 interface_name
-.I fe80::fefe/eth0
+.I fe80::fefe%eth0
 returns 
 .I ifname 
 and calls 
@@ -78,6 +78,15 @@ while returning the 'bytestring' representation
 .I 1001001....
 up to the given prefix length
 .IR plen .
+
+The macro
+.B ipv6_v4mapped
+reads the IPv6 addresses given as
+.I char[16]
+and returns
+.I 0
+in case the given IPv6 address is not 
+a IPv4 mapped address.
 .SH "RETURN CODES"
 The
 .B ip(6)*

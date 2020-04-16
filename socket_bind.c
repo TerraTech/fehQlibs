@@ -67,7 +67,7 @@ int socket_bind6_reuse(int s,const char ip[16],uint16 port,uint32 scope_id)
 int socket_bind(int s,const char ip[16],uint16 port,uint32 scope_id)
 {
   if (ipv4socket)
-    return socket_bind4(s,ip + 12,port);
+    return socket_bind4(s,ip+12,port);
   
   return socket_bind6(s,ip,port,scope_id);
 }
@@ -75,7 +75,7 @@ int socket_bind(int s,const char ip[16],uint16 port,uint32 scope_id)
 int socket_bind_reuse(int s,const char ip[16],uint16 port,uint32 scope_id)
 {
   if (ipv4socket)
-    return socket_bind4_reuse(s,ip + 12,port);
+    return socket_bind4_reuse(s,ip+12,port);
 
   return socket_bind6_reuse(s,ip,port,scope_id);
 }

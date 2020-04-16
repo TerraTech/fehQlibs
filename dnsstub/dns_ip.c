@@ -37,7 +37,7 @@ int dns_ip4_packet(stralloc *out,const char *buf,unsigned int len)
         if (datalen == 4) {
           if (!dns_packet_copy(buf,len,pos,header,4)) return DNS_ERR;
           if (!stralloc_catb(out,header,4)) return DNS_MEM;
-        }
+      }
     pos += datalen;
     ++ranswers;
   }
@@ -50,7 +50,7 @@ int dns_ip4(stralloc *out,stralloc *fqdn)
 {
   unsigned int i;
   char code;
-  char ch;
+  char ch; 
   int rc = 0;
 
   if (!stralloc_copys(out,"")) return DNS_MEM;
@@ -75,12 +75,12 @@ int dns_ip4(stralloc *out,stralloc *fqdn)
     }
 
     if (!dns_domain_fromdot(&q,fqdn->s,fqdn->len)) return DNS_ERR;	// fdqn -> A query -> response
-    if (dns_resolve(q,DNS_T_A) < 0) return DNS_ERR;
-    if ((rc += dns_ip4_packet(out,dns_resolve_tx.packet,dns_resolve_tx.packetlen)) < 0) return DNS_ERR;
-    dns_transmit_free(&dns_resolve_tx);
-    dns_domain_free(&q);
-
-    return rc;
+    if (dns_resolve(q,DNS_T_A) >= 0) {
+      if ((rc = dns_ip4_packet(out,dns_resolve_tx.packet,dns_resolve_tx.packetlen)) < 0) return DNS_ERR;
+      dns_transmit_free(&dns_resolve_tx);
+      dns_domain_free(&q);
+    }
+    return rc; 
   }
 
   out->len &= ~3;
@@ -133,12 +133,13 @@ int dns_ip6(stralloc *out,stralloc *fqdn)
   char code;
   char ch;
   char ip[16];
+  int r;
   int rc = 0;
 
   if (!stralloc_copys(out,"")) return DNS_MEM;
   if (!stralloc_readyplus(fqdn,1)) return DNS_MEM;
 
-  fqdn->s[fqdn->len] = 0;  /* if FQDN is just IPv6 */
+  fqdn->s[fqdn->len] = 0;		/* if FQDN is just IPv6 */
   if ((i = ip6_scan(fqdn->s,ip))) {
     if (fqdn->s[i]) return DNS_INT;
     if (!stralloc_copyb(out,ip,16)) return DNS_MEM;
@@ -165,16 +166,12 @@ int dns_ip6(stralloc *out,stralloc *fqdn)
     }
 
     if (!dns_domain_fromdot(&q,fqdn->s,fqdn->len)) return DNS_ERR; // fqdn -> AAAA query -> response
-    if (dns_resolve(q,DNS_T_AAAA) < 0 ) return DNS_ERR;
-    if ((rc += dns_ip6_packet(out,dns_resolve_tx.packet,dns_resolve_tx.packetlen)) < 0) return DNS_ERR;
-    dns_transmit_free(&dns_resolve_tx);
-    dns_domain_free(&q);
-
-    if (!dns_domain_fromdot(&q,fqdn->s,fqdn->len)) return DNS_ERR; // fqdn -> A query -> response
-    if (dns_resolve(q,DNS_T_A) < 0) return DNS_ERR;
-    if ((rc += dns_ip6_packet(out,dns_resolve_tx.packet,dns_resolve_tx.packetlen)) < 0) return DNS_ERR;
-    dns_transmit_free(&dns_resolve_tx);
-    dns_domain_free(&q);
+    if (dns_resolve(q,DNS_T_AAAA) >= 0) {
+      if ((r = dns_ip6_packet(out,dns_resolve_tx.packet,dns_resolve_tx.packetlen)) < 0) return DNS_ERR;
+      dns_transmit_free(&dns_resolve_tx);
+      dns_domain_free(&q);
+      rc += r;
+    }
 
     return rc;
   }

@@ -37,7 +37,7 @@ install: setup
 setup:
 	@./install
 
-shared: $(COMPILE) $(SCHARDLIB) $(OBJS) ./dnsstub/$(OBJS)
+shared: $(COMPILE) $(SHAREDLIB) $(OBJS) ./dnsstub/$(OBJS)
 	@echo Building shared qlibs ...
 	$(SHAREDLIB) $(OBJS) -o libqlibs.so 
 	$(SHAREDLIB) ./dnsstub/$(OBJS) -o libdnsresolv.so
