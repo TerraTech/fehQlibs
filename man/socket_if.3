@@ -1,0 +1,96 @@
+.TH qlibs: socket_if 3
+.SH NAME
+socket_if \- retrieve scope_id for interface name and vice versa
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+uint32 \fBsocket_getifidx\fP(const char* \fIifname\fR);
+
+const char* \fBsocket_getifname\fP(uint32 \fIscope_id\fR);
+.SH DESCRIPTION
+.B socket_getifidx
+returns the \fIscope_id\fR of an interface named as
+.I ifname
+typically ''eth0''. 
+
+.B socket_getifname 
+retrieves from the operating system's assigned
+.I scope_id
+the interface name
+.IR ifname .
+.SH INTERFACE_NAME VERSUS SCOPE_ID
+For IPv6 LLU addresses an additional 
+.I ifname
+(interface name) has to be provided accompanying the IPv6 address:
+.IR fe80::1%eth0 .
+The operating systems rather uses
+.I  scope_id
+as index for
+.IR ifname .
+
+For global IPv6 and ULA addresses
+.I ifname
+can be set to 
+.IR 0 .
+Since IPv4 addresses on any interface are always unique,
+simply use
+.I 0
+for all cases.
+.SH BACKGROUND
+Qlib's socket routines provide an easy API to setup 
+TCP or UDP connections over IPv4 or IPv6 networks. Together with
+Qlib's IP address parsing capabilities, a set of high-level
+socket routines allow a common IPv4/IPv6 handling.
+.SH SOCKET FILES
+.TP 5
+.B socket_bind.c
+bind to or reuse the local IPv4/IPv6 address and port 
+for a socket connection
+.TP 5
+.B socket_connect.c
+attempts to setup a TCP or UDP client connection
+.TP 5
+.B socket_info.c
+get local/remote IPv4/IPv6 address of socket
+.TP 5
+.B socket_recv.c
+set up a receiving IPv4/IPv6 connection
+.TP 5
+.B socket_send.c
+send UDP datagram over a IPv4 or IPv6 connection 
+.TP 5
+.B socket_setup.c
+listen to and accept an IPv4/IPv6 TCP socket connection
+.TP 5
+.B socket_tcp.c
+create a non-blocking TCP stream socket 
+.TP 5
+.B socket_udp.c
+create a non-blocking UDP datagram socket 
+.SH USAGE
+Most of the above files include their IPv4 and 
+IPv6 counterparts together with a combined usage 
+requiring in addition a 
+.I scope_id 
+or simply
+.IR 0 . 
+IPv4 addresses are usually converted upon reading to 
+IPv4-mapped IPv6 addresses using Qlib's IP address 
+parsing functions. 
+IPv4 and IPv6 socket calls are distinguished by
+means of setting the variable
+.IR ipv4socket .
+Typically, this is facilitated by means of:
+
+.EX
+  ipv4socket = ip6_isv4mapped(ip);
+.EE
+.SH "SEE ALSO" 
+socket_bind(3), 
+socket_connect(3), 
+socket_info(3), 
+socket_recv(3), 
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

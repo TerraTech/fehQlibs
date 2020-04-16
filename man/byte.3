@@ -1,0 +1,76 @@
+.TH qlibs byte 3
+.SH NAME
+byte \- byte manipulation/evalution 
+.SH SYNTAX
+.B #include \(dqbyte.h\(dq
+
+unsigned int \fBbyte_chr\fP(const char *\fIhaystack\fR,unsigned int \fIlen\fR,char \fIneedle\fR);
+.br
+unsigned int \fBbyte_rchr\fP(const char *\fIhaystack\fR,unsigned int \fIlen\fR,char \fIneedle\fR);
+
+void \fBbyte_copy\fP(char *\fIout\fR,unsigned int \fIlen\fR,const char *\fIin\fR);
+.br
+void \fBbyte_copyr\fP(char *\fIout\fR,unsigned int \fIlen\fR,const char *\fIin\fR);
+
+int \fBbyte_diff\fP(const char *\fIone\fR,unsigned int \fIlen\fR,const char *\fItwo\fR);
+.br
+int \fBbyte_equal\fP(const char *\fIone\fR,unsigned int \fIlen\fR,const char *\fItwo\fR);
+
+void \fBbyte_zero\fP(char *\fIout\fR,unsigned int \fIlen\fR);
+.SH DESCRIPTION
+.B byte_chr 
+returns the smallest integer \fIi\fR between 0 and
+\fIlen\fR-1 inclusive such that \fIone\fR[\fIi\fR] equals \fIneedle\fR.
+If no such integer exists, 
+.B byte_chr 
+returns \fIlen\fR.
+.B byte_chr 
+may read all bytes \fIone\fR[0], \fIone\fR[1], ...,
+\fIone\fR[\fIlen\fR-1], even if not all the bytes are relevant to the
+answer.
+
+.B byte_rchr 
+returns the largest integer \fIi\fR between 0 and
+\fIlen\fR-1 inclusive such that \fIone\fR[\fIi\fR] equals \fIneedle\fR.
+If no such integer exists, 
+.B byte_rchr 
+returns \fIlen\fR.
+.B byte_rchr 
+may read all bytes \fIone\fR[0], \fIone\fR[1], ...,
+\fIone\fR[\fIlen\fR-1], even if not all the bytes are relevant to the
+answer.
+
+.B byte_copy 
+copies \fIin\fR[0] to \fIout\fR[0], \fIin\fR[1] to
+\fIout\fR[1], etc., and finally \fIin\fR[\fIlen\fR-1] to
+\fIout\fR[\fIlen\fR-1].
+
+.B byte_copyr 
+copies \fIin\fR[\fIlen\fR-1] to \fIout\fR[\fIlen\fR-1], 
+\fIin\fR[\fIlen\fR-2] to \fIout\fR[\fIlen\fR-2], etc., and
+\fIin\fR[0] to \fIout\fR[0].
+
+.B byte_diff 
+returns negative, 0, or positive, depending on whether
+the string \fIone\fR[0], \fIone\fR[1], ..., \fIone\fR[\fIlen\fR-1] is
+lexicographically smaller than, equal to, or greater than the string
+\fIone\fR[0], \fIone\fR[1], ..., \fIone\fR[\fIlen\fR-1].
+When the strings are different, 
+.B byte_diff 
+does not read bytes past the first difference.
+
+.B byte_equal
+returns 
+.I 1 
+if the strings are equal, 
+.I 0
+otherwise.
+When the strings are different, 
+.B byte_equal 
+does not read bytes past the first difference.
+
+.B byte_zero 
+sets \fIout\fR[0], \fIout\fR[1], ..., \fIout\fR[\fIlen\fR-1] to 0.
+.SH "SEE ALSO"
+case(3), 
+stralloc(3)

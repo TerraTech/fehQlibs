@@ -1,0 +1,61 @@
+.TH qlibs:cdbmake 3
+.SH NAME
+cdmake \- generate and fill a constant database 
+.SH SYNTAX
+.B #include \(dqcdmake.h\(dq
+
+int \fBcdb_make_start\fP(struct cdb *\fIc\fR,int \fIfd\fR);
+.br
+int \fBcdb_make_add\fP(struct cdb *\fIc\fR,char *\fIkey\fR,unsigned int \fIkeylen\fR,
+                 char *\fIdata\fR,unsigend int \fIdatalen\fR);
+.br
+int \fBcdb_make_finish\fP(struct cdb *\fIc\fR);
+.SH DESCRIPTION
+.B cdb_make_start
+generates and intitialises a new cdb named
+.I c
+and makes it available via file descriptor 
+.IR fd .
+
+.B cdb_make_add
+adds entries using the file descriptor
+.I fd
+given as
+.I key 
+with length
+.I keylen 
+into the cdb returning the hashed values
+.I data 
+with length
+.IR datalen .
+
+.B cdb_make_finish
+finalises the data structure provided as
+.IR fd .
+
+.SH "RETURN CODES"
+Usually, the 
+.B cdb_make_*
+routines provide a return code of 
+.I 0
+for successful operations and 
+.I -1
+if anything is going wrong.
+
+.SH EXAMPLE
+#include <cdbmake.h>
+
+  int fd;
+  stralloc data = {0};
+  stralloc key = {0};
+
+  struct cdb_make c;
+
+  if (cdb_make_start(&c,fd) == -1) die_write();
+  if (cdb_make_add(&c,key.s,key.len,data.s,data.len) == -1) 
+    die_write();
+  if (cdb_make_finish(&c) == -1) die_write();
+  if (fsync(fd) == -1) die_write();
+
+.SH "SEE ALSO"
+cdbread(3)

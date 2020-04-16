@@ -1,0 +1,109 @@
+.TH qlibs: logmsg 3 
+.SH NAME
+logmsg \- handle system errors and application log messages
+.SH SYNTAX
+.B #include \(dqlogmsg.h\(dq
+
+int logmsg(char *who, int ecode, unsigned int classs, char *msg)
+
+\fBerr_sys\fR(w,e) logmsg(w,e,FATAL,"")
+.br
+\fBerr_sys_plus\fR(w,e,m) logmsg(w,e,FATAL,m)
+.br
+\fBerr_tmp\fR(w,e) logmsg(w,e,WARN,"")
+.br
+\fBerr_tmp_plus\fR(w,e,m) logmsg(w,e,WARN,m)
+.br
+\fBerr_int\fR(w,e,c) logmsg(w,e,c,"")
+.br
+\fBerr_int_plus\fR(w,e,c,m) logmsg(w,e,c,m)
+.br
+\fBlog\fR(w,m) logmsg(w,0,LOG,m)
+.br
+\fBlog_anon\fR(m) logmsg("",0,LOG,m)
+.SH DESCRIPTION
+\fBlogmsg\fR prints error, warning, or info/logging messages to stderr 
+and potentially terminates the calling program, depending on the \fIclass\fR given.
+\fIwho\fR is the name of the program, \fIecode\fR is an error code, 
+\fIclass\fR determines the behavior upon call and \fImsg\fR is the logging message. 
+Read "error.h" to learn related constants.
+.SH ECODE
+\fIecode\fR is the error code and subject to be displayed in the log file and
+potentially used upon exit in case the \fIclass\fR equals \fBFATAL\fR or \fBDROP\fR.
+
+To avoid conflicts with syscall error codes, appplication defined error codes should be negative. 
+The values \fI-15\fR, \fI-100\fR and \fI-111\fR are reserved for backwards compatibility. 
+.SH CLASS
+The \fIclass\fr parameter indicates how the application handles exceptions and displays the
+log message.
+.TP 4
+o
+\fBLOG\fR, \fBINFO\fR, \fBWARN\fR - display message and continue operation
+.TP 4
+o
+\fBDROP\fR - display warning message and continue while going to the calling program
+.TP 4
+o
+\fBUSAGE\fR, \fBSYNTAX\fR, \fBFATAL\fR, \fBERROR\fR 
+- display error message and exit application with error code
+.RE
+
+\fBINFO\fR, \fBWARN\fR, \fBDROP\fR, \fBUSAGE\fR, and \fBFATAL\fR as well as \fBERROR\fR 
+display the respective class string like \fIwarn:\fR in the log message, 
+while \fBLOG\fR shows the log message only.
+
+The class \fBFATAL\fR should be used for system error codes only, rather \fBERROR\fR
+and \fBWARN\fR shall be set in conjunction with an application error/warning.
+.SH MESSAGE
+If the custom message \fImsg\fR is given, it will be printed additionally.
+.SH FORMAT
+The log message format consists of the tokens
+\fIwho\fR: (\fIecode\fR) \fImsg\fR : \fImsg\fR.
+.I ecode 
+is displayed only for classes \fBFATAL\fR, \fBERROR\fR, or \fBDROP\fR.
+.I msg
+is the system's explanation according to the variable
+.I errno
+if provided.
+.SH NOTES
+.I logmsg.c 
+uses 
+.I errstr.c 
+routines.
+Error codes and classes are defined in 
+.I error.h 
+and included by 
+.IR logmsg.h .
+.SH "EXIT CODE"
+\fBlogmsg\fR exits \fIecode\fR for classes \fBERROR\fR, \fBFATAL\fR, \fBSYNTAX\fR, 
+and \fBUSAGE\fR terminating the application.
+.SH HISTORY
+Dan Bernstein used sets of \fIstrerr_dieY*()\fR and \fIstrerr_warnY()\fR messages 
+which explicitely determine the message and behavior class. 
+Other classes were occasionally defined on demand, such als \fIusage()\fR. 
+
+Kai Peter introduced the \fIerrmsg\fR facility in his \fBqlibs\fR 
+including a \fBsyslog\fR compliant \fIseverity\fR as second parameter. 
+.SH EXAMPLES
+The macro definitions uses  \fBw\fR for the calling program, 
+\fBe\fR for error code, \fBc\fR for class, and \fBm\fR for message.
+
+  #include "logmsg.h"
+  #define WHO "my_prog"
+
+  err_sys(WHO,errno);
+  err_sys_plus(WHO,-111,"additional message");
+
+  err_tmp("",-100);
+  err_tmp("",errno,"additional message");
+
+  log(WHO,"message");
+
+log_anon() is like log() but doesn't print the caller name.
+
+An user defined message \fBs\fR can be build from multiple arguments by using the \fIB\fR
+(build) macro:
+
+  err_sys_plus((errno),B("unable to run: ",*argv));
+.SH "SEE ALSO"
+syslog(3)

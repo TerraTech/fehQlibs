@@ -1,0 +1,97 @@
+.TH glibs: getln 3
+.SH NAME
+getln \ - read one line of data  
+.SH SYNTAX
+.B #include \(dqgetln.h\(dq
+
+int \fBgetln\fP(&ss,&sa,&match,sep);
+.br
+int \fBgetln2\fP(&ss,&sa,&cont,&clen,sep);
+
+substdio \fIss\fR; 
+.br
+stralloc \fIsa\fR; 
+.br
+int \fImatch\fR; 
+.br
+int \fIsep\fR;  
+.br
+char *\fIcont\fR; 
+.br
+unsigned int \fIclen\fR; 
+.SH DESCRIPTION
+.B getln 
+reads a line of characters, terminated by a sep character, from 
+.IR ss . 
+It returns the line in 
+.I sa 
+and sets match to 
+.IR 1 .
+If 
+.B getln 
+sees end-of-input before it sees 
+.IR sep , 
+it returns the partial line in 
+.I sa 
+and sets match to
+.IR  0 .
+
+.B getln2 
+reads a line of characters, terminated by a 
+.I sep 
+character, from 
+.IR ss .
+The line is returned in two pieces. The first piece is stored in 
+.IR sa . 
+The second piece is 
+.IR cont , 
+a pointer to 
+.I clen 
+characters inside the 
+.I ss 
+buffer. The second piece must be copied somewhere else before 
+.I ss 
+is used again.
+If 
+.B getln2 
+sees end-of-input before it sees 
+.IR sep , 
+it sets 
+.I clen 
+to 
+.I 0 
+and does not set 
+.IR cont . 
+It puts the partial line into 
+.IR sa.
+.SH "RETURN CODES"
+.B getln 
+normally returns 
+.IR 0 . 
+If it runs out of memory, or encounters an error from 
+.IR ss , 
+it returns 
+.IR -1 , 
+setting 
+.I errno 
+appropriately.  
+
+.B getln2 
+normally returns 
+.IR 0 . 
+If it runs out of memory, or encounters an error from 
+.IR ss , 
+it returns 
+.IR -1 , 
+setting 
+.I errno 
+appropriately.  
+.SH CREDITS
+The
+.B getln 
+and
+.B getln2
+man page were taken from Bruce Guenther and 
+originally published by Dan Bernstein for qmail-1.03.
+.SH SEE ALSO
+stralloc(3)

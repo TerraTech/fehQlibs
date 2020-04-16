@@ -1,0 +1,124 @@
+.TH buffer 3
+.SH NAME
+buffer \- generic read/write buffering
+.SH SYNTAX
+.B #include \(dquffer.h\(dq
+
+buffer* buffer_0;   /* like stdio's stdin */
+.br
+buffer* buffer_1;   /* like stdio's stdout */
+.br
+buffer* buffer_2;   /* like stdio's stderr */
+
+void \fBbuffer_init\fR(buffer &\fIb\fR,ssize_t (*\fIop\fR)(int,char*,size_t),
+                int \fIfd\fR, char* \fIy\fR, size_t \fIylen\fR);
+.br
+ssize_t \fBbuffer_get\fP(buffer* \fIb\fR,char* \fIx\fR,size_t \fIlen\fR);
+
+int \fBbuffer_put\fP(buffer* \fIb\fR,const char* \fIx\fR,size_t \fIlen\fR);
+.br
+int \fBbuffer_putalign\fP(buffer* \fIb\fR,char* \fIx\fR,unsigned int \fIlen\fR);
+.br
+int \fBbuffer_putsalign\fP(buffer* \fIb\fR,char* \fIx\fR);
+
+.SH DESCRIPTION
+.B buffer.h 
+describes a generic buffer interface that can be used for
+read and write buffering. Buffers must be initialized with
+\fBbuffer_init\fR.
+
+A buffer can only be used for reading or writing at the same time, not
+both.
+
+Unlike 
+.BR stdio ,
+these write buffers are not flushed automatically at
+program termination; you must manually call \fBbuffer_flush\fR,
+\fBbuffer_putsflush\fR, \fBbuffer_putflush\fR or
+\fBbuffer_putnlflush\fR.
+
+.B buffer_init 
+prepares \fIb\fR to store a string in \fIy\fR[0], \fIy\fR[1], ...,
+\fIy\fR[\fIylen\fR-1].  Initially the string is empty.
+
+.B buffer_init 
+also prepares \fIb\fR to use the read/write operation specified by
+\fIop\fR and \fIfd\fR.
+
+You can use
+
+  buffer \fIb\fR = BUFFER_INIT(\fIop\fR,\fIfd\fR,\fIy\fR,\fIylen\fR);
+
+to initialize \fIb\fR statically if \fIop\fR, \fIfd\fR, \fIy\fR, and \fIylen\fR
+are compile-time constants.
+
+You can call 
+.B buffer_init 
+again at any time. Note that this discards the currently buffered string.
+
+.B buffer_get 
+copies data to \fIx\fR[0], \fIx\fR[1], ...,
+\fIx\fR[\fIlen\fR-1] from the beginning of a string stored in
+preallocated space; removes these \fIlen\fR bytes from the string; and
+returns \fIlen\fR.
+
+If, however, the string has fewer than \fIlen\fR (but more than 0)
+bytes, 
+.I buffer_get 
+copies only that many bytes, and returns that number.
+
+If the string is empty, 
+.B buffer_get 
+first uses a \fBread operation\fR to
+feed data into the string. The \fBread operation\fR may indicate end of
+input.
+
+The preallocated space and the \fBread operation\fR are specified by
+\fIb\fR. You must initialize \fBb\fR using 
+.B buffer_init 
+before calling
+.B buffer_get 
+(or use the pre-initialized \fIbuffer_0\fR).
+
+.B buffer_put 
+writes \fIlen\fR bytes from \fIx\fR to \fIb\fR.
+
+The difference to 
+.B buffer_putalign 
+is that, when there isn't enough space
+for new data, 
+.B buffer_put 
+calls 
+.B buffer_flush 
+before copying any data, while 
+.B buffer_putalign 
+fills all available space with data before calling
+.B buffer_flush.
+.SH EXAMPLE
+  #include <buffer.h>
+  #include <open.h>
+
+  char buf[4096];
+  int fd = open_read("/etc/services");
+  buffer input;
+
+  if (fd >= 0) {
+    char x;
+    buffer_init(&input,read,fd,buf,sizeof buf);
+    while (buffer_get(&input,&x,1) == 1) {
+      buffer_put(buffer_1,&x,1);
+      if (x == '\\n') break;
+    }
+    buffer_flush(buffer_1);
+  }
+.SH "RETURN VALUE"
+.B buffer_put 
+and 
+.B buffer_get
+return
+.I 0 
+if everything was fine, 
+.I -1 
+on error (setting \fIerrno\fR).
+.SH "SEE ALSO"
+stdio(3)

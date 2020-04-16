@@ -1,0 +1,124 @@
+.TH qlibs: pathexec 3
+.SH NAME
+pathexec \- run a program within a given environment
+.SH SYNTAX
+.B #include \(dqpathexec.h\(dq
+
+\fBpathexec_run\fP(char *\fIp\fR,char **\fIa\fR,char **\fIe\fR);
+.br
+\fBpathexec\fP(char **\fIa\fR);
+.br
+\fBpathexec_env\fP(char *\fIs\fR,char *\fIt\fR);
+.SH DESCRIPTION
+.B pathexec_run 
+searches for a program named 
+.IR p . 
+It replaces the current process with a copy of that program. 
+The main function in that program will be given arguments 
+.I a 
+and environment 
+.IR  e .
+.B pathexec_run 
+looks for 
+.I p 
+as specified by the 
+.I $PATH 
+environment variable. 
+.I $PATH 
+is a colon-separated list of directories 
+.IR d ;
+.B pathexec_run 
+tries 
+.B execve 
+on files named 
+.IR d/p , 
+in the order that the directories appear inside 
+.IR $PATH . 
+An empty directory name is treated as a single dot.
+
+If 
+.I $PATH 
+is not set, 
+.B pathexec_run 
+uses the path 
+.IR  /bin:/usr/bin ; 
+i.e., it tries 
+.B execve 
+on 
+.IR /bin/p , 
+then 
+.IR /usr/bin/p .
+
+If 
+.I p 
+contains a slash, 
+.B pathexec_run 
+ignores 
+.I $PATH 
+and simply runs 
+.B execve 
+on a file named 
+.IR p .
+
+.B pathexec 
+calls 
+.B pathexec_run 
+with program name 
+.IR a[0] , 
+arguments 
+.IR a , 
+and the same environment as the current process, 
+modified as described below. 
+.B pathexec 
+has the same return behavior as 
+.BR pathexec_run .
+.B pathexec_env 
+modifies the environment used by 
+.BR pathexec . 
+It removes a variable named 
+.IR s, 
+if one exists. It then adds a variable named 
+.I s 
+with value 
+.IR t, 
+if the pointer 
+.I t 
+is nonzero. The name 
+.I s 
+must not contain 
+.IR = .
+.SH "RETURN CODES"
+Normally
+.B pathexec_run
+does not return, because the process has been replaced.
+However, if all the
+.B execve
+attempts fail,
+.B pathexec_run
+returns, setting
+.I errno
+to the most interesting error returned by
+.BR execve .
+Furthermore,
+.B pathexec_run
+returns immediately if an
+.B execve
+attempt fails with an error other than
+.IR error_noent ,
+.IR error_acces ,
+.IR error_perm ,
+or
+.IR  error_isdir .
+This list is subject to change.
+
+Normally 
+.B pathexec_env 
+returns 
+.IR 1 . 
+If it is unable to allocate memory, it returns 
+.IR 0 , 
+leaving the 
+.B pathexec 
+environment alone.
+.SH "SEE ALSO"
+error(3)

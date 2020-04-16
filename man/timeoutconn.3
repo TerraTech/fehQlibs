@@ -1,0 +1,52 @@
+.TH qlibs: timeoutconn 3
+.SH NAME
+timeoutconn \- set up an outoing stream socket for IPv4/IPv6
+.SH SYNTAX
+.B #include \(dqtimeoutconn.h\(dq
+
+int \fBtimeoutconn4\fP(int \fIs\fR,char \fIip\fR,uint16 \fIp\fR,unsigned int \fIt\fR);
+.br
+int \fBtimeoutconn6\fP(int \fIs\fR,char \fIip\fR,uint16 \fIp\fR,unsigned int \fIt\fR,uint32 \fInetif\fR);
+.br
+int \fBtimeoutconn\fP(int \fIs\fR,char \fIip\fR,uint16 \fIp\fR,unsigned int \fIt\fR,uint32 \fInetif\fR);
+.SH DESCRITPION
+.B timeoutconn
+tries to establish a TCP stream socket to address
+.I ip
+on remoteport
+.I p
+and waiting for
+.I t
+seconds and on success returns the
+.I s
+socket identifier.
+
+In case 
+.I addresss 
+is an IPv6 LLU address, one needs to define the
+.I netif
+interface index, otherwise 
+.I 0
+is the default.
+.SH INTERNALS
+.B timeoutconn
+depends on 
+.B taia
+and
+.B iopuase
+to determine the timespan and perhaps
+.B ndelay
+to succeed.
+.SH RETURN CODES
+.B timeoutconn
+returns
+.I 0
+if the connection is established
+and 
+.I -1
+if an error has occured. 
+.SH SEE ALSO
+socket_if(3),
+timeout(3)
+taia(3),
+wait(3)

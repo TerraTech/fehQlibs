@@ -1,0 +1,82 @@
+.TH qlibs: dnsstub
+.SH NAME
+dns \- stub resolver 
+.SH SYNTAX
+.B #include \(dqdnsresolv.h\(dq
+
+int \fBdns_resolvconfip\fP(char \fIservers\fR[512],uint32 \fIscope\fR[32]);
+
+int \fBdns_transmit_start\fP(struct dns_transmit *\fId\fR,const char \fIservers\fR[512],
+    int \fIflagrecursive\fR,const char *\fIq\fR,const char \fIqtype\fR[2],
+    const char \fIlocalip\fR[16]); 
+.br
+int \fBdns_transmit_start6\fP(struct dns_transmit *\fId\fR,const char \fIservers\fR[512],
+    int \fIflagrecursive\fR,const char *\fIq\fR,const char \fIqtype\fR[2], 
+    const char \fIlocalip\fR[16],const uint32 \fIscopes\fR[32]); 
+
+int \fBdns_sortip4(\fP(char *\fIservers\fR,unsigned int \fIn\fR);
+.br
+int \fBdns_sortip6\fP(char *\fIservers\fR,unsigned int \fIn\fR);
+.br
+int \fBdns_sortip\fP(char *\fIservers\fR,unsigned int \fIn\fR);
+.SH DESCRIPTION
+.B dns_resolvconfip
+reads the name servers defined in
+.I /etc/resolv.conf
+and uses
+.B ip6_ifscan
+to fetch their IPv4/IPv6 addresses together with the scope for the LLU address.
+Up to 
+.I 32
+name servers can be specified.
+
+Apart from the system-wide
+.I /etc/resolv.conf
+the IP addresses of name servers can preferrably be provided by means of the
+environment variable
+.I $DNSCACHEIP 
+for each user application. The variable
+.I $DNSCACHEIP
+may include up to 32 name server IP addresses separated by white spaces:
+
+.EX
+  DNSCACHEIP="10.0.1.53 fe80::1%lo0 ::1"
+.EE
+
+.B dns_transmit_start
+and 
+.B dns_transmit_start6
+use the list of name server IP's for a recursive or none-recursive 
+query 
+.I q
+of type
+.I qtype
+starting from IP address
+.I localip
+for which the 
+.I struct dns_transmit
+provides the required  book keeping information.
+.B dns_transmit_start6
+additionally is able to evaluate the given
+.I scope_id
+as information for the local interface in order 
+to bind to the remote IPv6 LLU addresses. Usually 
+.I scope_id
+defaults to
+.IR 0 .
+
+.B dns_sortip
+together with the companion routines
+.B dns_sortip4
+and
+.B dns_sortip6
+randomize the list of name server IPs upon call and as result the first address
+is used to facilitate the name lookup.
+.B dns_sortip
+will remove IPv6 addresses from the list given a
+.IR ipv4socket .
+.SH "SEE ALSO"
+dns(3), 
+ip4(3), 
+ip6(3), 
+socket_if(3)

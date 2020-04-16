@@ -1,0 +1,56 @@
+.TH qlibs: socket_recv 3
+.SH NAME
+socket_recv \- receive UDP datagrams over IPv4/IPv6 connections
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_recv\fP(int \fIs\fR, const char* \fIbuf\fR, unsigned int \fIlen\fR,
+                    const char \fIip\fR[16], uint16 *\fIport\fR, uint32 *\fIscope_id\fR);
+.SH DESCRIPTION
+.B socket_recv 
+reads \fIlen\fR bytes starting at \fIbuf\fR in a UDP datagram 
+over the socket \fIs\fR while providing information about the 
+remote IP address \fIip\fR and the UDP \fIport\fR and
+the perhaps \fIscope_id\fR of the receiving interface.
+
+You can call 
+.B socket_recv 
+without calling 
+.BR socket_bind .  
+This has the effect as first calling 
+.B socket_bind 
+with IP address :: and port 0.
+.SH RETURN VALUE
+.B socket_recv
+returns 
+.IR 0 ,
+otherwise
+.I -1 
+and sets 
+.I errno 
+appropriately.
+.SH EXAMPLE
+  #include <socket_if.h>
+  #include <ip.h>
+
+  int \fIs\fR;
+  char \fIlocalip\fR[16];
+  char \fIremoteip\fR[16];
+  uint16 \fIp\fR, \fIport\fR;
+  uint32 \fIscope_id\fR;
+  unsigned int \fIlen\fR;
+  int \fIr\fR;
+  char buf[MTUSIZE+1];
+
+  s = socket_udp();
+  socket_bind_reuse(s,localip,p,0);
+  r = socket_recv(s,buf,len,remoteip,&port,&scope_id);
+.SH SEE ALSO
+socket_if(3), 
+socket_info(3), 
+socket_bind(3), 
+socket_connect(3)
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

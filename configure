@@ -1,0 +1,65 @@
+#!/bin/sh
+#********************************************************************************
+# Very simple configure script for qlibs
+
+. ./conf-build
+# Add $HDRDIR as include option to default $CFLAGS
+[ "$HDRDIR" ] && CFLAGS="$CFLAGS -I$HDRDIR"
+
+#********************************************************************************
+# check for system header files
+#
+# Usually, 'select.h' should (have to) be in this location ...
+SELECT_H="/usr/include/sys/select.h"
+echo -n "Checking for select.h ..."
+if [ -f $SELECT_H ] ; then CFLAGS="$CFLAGS -DHAS_SELECT_H"
+   else echo -n " not" ; fi
+echo " found!"
+
+# On linux we have flock, other systems have lockf instead
+echo -n "Checking for flock/lockf ..."
+which flock 2>/dev/null >/dev/null
+if [ $? -eq 0 ] ; then CCOPTS="$CFLAGS -DHASFLOCK=1" ; echo -n " flock"
+   else echo -n " lockf" ; fi
+echo " found!"
+
+# Current systems provide a poll interface ... via
+POLL_H="/usr/include/poll.h"
+POLL_H1="/usr/include/sys/poll.h"
+echo -n "Checking for poll.h ..."
+if [ -f $POLL_H -o -f $POLL_H1 ] ; then CFLAGS="$CFLAGS -DHAS_POLL_H"
+   else echo -n " not" ; fi
+echo " found!"
+
+# Current systems support 64 bit integers ... via
+STDINT_H="/usr/include/stdint.h"
+echo -n "Checking for uint64_t ..."
+if [ `grep -c uint_least64_t $STDINT_H` ] ; then CFLAGS="$CFLAGS -DHAS_UINT64_H"
+   else echo -n " not" ; fi
+echo " found!"
+
+#********************************************************************************
+# Create compile, load, makelib, sharedlib
+echo -n "Checking for compile ... "
+CC="cc"
+( echo '#!/bin/sh'
+  echo exec "$CC" "$CFLAGS" -c '${1+"$@"}' ) > compile
+chmod 755 compile
+echo " created!"
+
+echo -n "Checking for makelib ... "
+( echo '#!/bin/sh' ;
+  echo "" ;
+  echo 'main="$1"; shift' ; \
+  echo 'rm -f "$main"' ; \
+  echo 'ar cr "$main" ${1+"$@"}' ; \
+  echo 'ranlib "$main"') > makelib
+chmod 755 makelib
+echo " created!"
+
+echo -n "Checking for sharedlib ... "
+CC="cc"
+( echo '#!/bin/sh'
+  echo exec "$CC" -shared '${1+"$@"}' ) > sharedlib
+chmod 755 sharedlib
+echo " created!"

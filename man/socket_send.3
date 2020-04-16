@@ -1,0 +1,76 @@
+.TH qlibs: socket_send 3
+.SH ROUTINES
+socket_send \- sending data over a UDP socket
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_send4\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+                     const char \fIip\fR[4],uint16 \fIport\fR);
+.br
+int \fBsocket_send6\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+                     const char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
+.br
+int \fBsocket_send\fP(int \fIs\fR,const char* \fIbuf\fR,unsigned int \fIlen\fR,
+                    const char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
+.SH DESCRIPTION
+.B socket_send4 
+sends \fIlen\fR bytes starting at \fIbuf\fR in a UDP
+datagram over the socket \fIs\fR to UDP port \fIport\fR on IPv4 address
+\fIip\fR.
+
+.B socket_send6 
+sends \fIlen\fR bytes starting at \fIbuf\fR in a UDP datagram 
+over the socket \fIs\fR to UDP port \fIport\fR on IPv6 address \fIip\fR and perhaps 
+using \fIscope_id\fR as outging interface.
+
+For link-local IPv6 (LLU) addresses \fIscope_id\fR specifies the outgoing
+interface index. 
+.I socket_id 
+can be queried for the given name of the interface (e.g. "eth0") by means of
+.BR socket_getifidx .  
+\fIscope_id\fR should normally be set to 0 except for link local IPv6 addresses
+
+.B socket_send
+sends \fIlen\fR bytes starting at \fIbuf\fR in a UDP datagram
+over the socket \fIs\fR to UDP port \fIport\fR on IP address \fIip\fR and perhaps
+using \fIscope_id\fR as outging interface.
+
+You can call 
+.B socket_send* 
+without calling 
+.BR socket_bind* .  
+This has the effect as first calling 
+.B socket_bind4
+with IP address 0.0.0.0 and port 0
+or 
+.B socket_bind6
+with IP address :: and port 0.
+.SH RETURN VALUE
+.B socket_send* 
+returns 
+.I 0 
+if the datagram was sent successfully.  If not,
+it returns 
+.I -1 
+and sets 
+.I errno 
+appropriately.
+.SH EXAMPLE
+  #include <socket_if.h>
+
+  int \fIs\fR;
+  char \fIip\fR[4];
+  uint16 \fIp\fR;
+
+  s = socket_udp();
+  socket_bind(s,ip,p);
+  socket_send(s,"hello, world",12,ip,p,0);
+.SH "SEE ALSO"
+socket_if(3), 
+socket_info(3), 
+socket_bind(3), 
+socket_connect(3),
+socket_recv(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

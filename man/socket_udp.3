@@ -1,0 +1,52 @@
+.TH qlibs: socket_udp 3
+.SH NAME
+socket_udp \- setting up UDP datagram sockets
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_udp4\fP();
+.br
+int \fBsocket_udp6\fP();
+.br
+int \fBsocket_udp\fP();
+.SH DESCRIPTION
+.B socket_udp4 
+creates a non-blocking UDP/IPv4 datagram socket and 
+providing a file descriptor pointing to that socket.
+
+.B socket_udp6 
+creates a non-blocking UDP/IPv6 datagram socket and 
+providing a file descriptor pointing to that socket. 
+
+.B socket_udp
+creates a non-blocking IPv6 UDP socket calling
+.B socket_udp6
+unless 
+.IR ipv4socket = 1 ,
+now employing 
+.BR socket_udp4 .
+.SH "REMOTE CODES"
+All these routines return
+.IR 0
+except in case of failures, returning
+.I -1 
+and setting 
+.I errno 
+appropriately, without allocating any resources.
+.SH EXAMPLE
+  #include <socket_if.h>
+
+  ipv4socket = ip6_isv4mapped(ip);
+  
+  u = socket_udp();
+  socket_bind(u,localip,p);
+  socket_connect(u,remoteip,p,0);
+.SH "SEE ALSO"
+socket_if(3), 
+socket_bind(3), 
+socket_connect(3), 
+socket_info(3), 
+socket_recv(3), 
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3)

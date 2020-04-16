@@ -1,0 +1,36 @@
+.TH qlibs: timeout 3
+.SH NAME
+timeout \- reading from and writing to a file descriptor
+.SH SYNTAX
+.B #include \(dqtimeout.h\(dq
+
+int \fBtimeoutread\fP(int \fIt\fR,int \fIfd\fR,char *\fIbuf\fR,int \fIlen\fR);
+.br
+int \fBtimeoutwrite\fP(int,int,char *,int);
+.SH DESCRIPTION
+.B timeoutread
+reads from file descriptor
+.I fd
+.I len
+bytes into
+.I buf 
+returning 
+.I 0
+on success and
+.I -1
+in case a timeout has occured.
+.B timeoutwrite
+writes to file descriptor
+.I fd
+.I len
+bytes from
+.I buf 
+returning 
+.I 0
+on success and
+.I -1
+in case a timeout has occured.
+.SH "SEE ALSO"
+wait(3),
+timeoutconn(3)
+taia(3).

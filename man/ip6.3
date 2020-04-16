@@ -1,0 +1,92 @@
+.TH qlibs: ipv6
+.SH NAME
+ipv6 \- IPv6 address evaluation and conversion
+.SH SYNOPSIS 
+.B #include \(dqip.h\(dq
+
+unsigned int \fBip6_fmt\fP(char *\fIs\fR,char \fIip[16]\fR);
+.br
+unsigned int \fBip6_fmt_flat\fP(char *\fIs\fR,char \fIip[16]\fR);
+.br
+unsigned int \fBip6_scan_flat\fP(const char *\fIs\fR,char \fIip[16]\fR);
+.br
+unsigned int \fBip6_scan\fP(const char *\fIs\fR,char \fIip[16]\fR);
+.br
+unsigned int \fBip6_scanbracket\fP(const char *\fIs\fR,char \fIip[16]\fR);
+.br
+unsigned int \fBip6_ifscan\fP(char *\fIs\fR,char \fIip[16]\fR,stralloc *\fIifname\fR);
+.br
+unsigned int \fBip6_cidr\fP(char *\fIs\fR,char \fIip[16]\fR,unsigned long *\fIplen\fR);
+.br
+unsigned int \fBip6_bytestring\fP(stralloc *\fIip6string\fR,char \fIip[16]\fR,int \fIplen\fR);
+.SH DESCRIPTION
+.B ip6_fmt
+reads the
+.I char[16]
+IPv6 address and returns a compactified hexadecimal IPv6 address string
+.IR fe80::fefe .
+
+.B ip6_fmt_flat
+reads the
+.I char[16]
+IPv6 address and returns all hexadecimal IPv6 address labels as string 
+.IR fe80:0000:....:fefe .
+
+.B ip6_scan
+reads a compactified IPv6 address string
+.I fe80::fefe
+and converts it to the
+.I char[16]
+IPv6 address.
+
+.B ip6_scan_flat
+reads an uncompressed IPv6 address als hexadecimal string
+and returns it's
+.I char[16]
+IPv6 address.
+
+.B ip6_scanbracket
+reads a compactified IPv6 address string enclosed in brackets
+.I [fe80::fefe]
+removes the brackets and calls
+.B ip6_scan
+on the result.
+
+.B ip6_ifscan
+reads the compactified IPv6 address string appended with the
+interface_name
+.I fe80::fefe/eth0
+returns 
+.I ifname 
+and calls 
+.B ip6_scan
+for the (stripped) IPv6 address.
+
+.B ip6_cidr
+reads the compactified CIDR IPv6 address string
+.I fe80::fefe/64
+determines the prefix as integer
+.I plen
+and calls
+.BR ip6_scan .
+If no prefix is identfied, it returns 128.
+
+.B ip6_bytestring
+reads the IPv6 address given as
+.I char[16]
+while returning the 'bytestring' representation
+.I 1001001....
+up to the given prefix length
+.IR plen .
+.SH "RETURN CODES"
+The
+.B ip(6)*
+programs return the number of bytes processed;
+except for
+.B ip6_bytestring
+returning
+.I 0
+on success; others on failure. 
+.SH "SEE ALSO"
+ip4(3), 
+socket_if(3)

@@ -1,0 +1,75 @@
+.TH qlibs: error 3
+.SH NAME
+error \- syscall error codes and information
+.SH SYNTAX
+.B #include \(dqlogmsg.h\(dq
+
+extern int \fBerrno\fP;
+
+extern int \fBerror_intr\fP;
+.br
+extern int \fBerror_nomem\fP;
+.br
+extern int \fBerror_noent\fP;
+.br
+extern int \fBerror_txtbsy\fP;
+.br
+extern int \fBerror_io\fP;
+.br
+extern int \fBerror_exist\fP;
+.br
+extern int \fBerror_timeout\fP;
+.br
+extern int \fBerror_inprogress\fP;
+.br
+extern int \fBerror_wouldblock\fP;
+.br
+extern int \fBerror_again\fP;
+.br
+extern int \fBerror_pipe\fP;
+.br
+extern int \fBerror_perm\fP;
+.br
+extern int \fBerror_access\fP;
+
+char *\fBerror_str\fP(int \fIe\fR);
+
+int \fBerror_temp\fP(int \fIe\fR);
+UNIX syscalls provide detailed error codes in the
+.B errno
+variable.
+The
+.B error
+library provides portable names for a variety of possible
+.B errno
+values.
+
+.B error_str
+returns a printable string describing syscall error code
+.IR e .
+Normally
+.I e
+is
+.BR errno .
+
+.B error_temp
+returns 
+.I 1 
+if syscall error code
+.I e
+is a soft error, 
+.I 0 
+if it is a hard error.  Normally
+.I e
+is
+.BR errno .
+
+A hard error is persistent:
+file not found, read-only file system, symbolic link loop, etc.
+
+A soft error is usually transient:
+out of memory, out of disk space, I/O error, disk quota exceeded,
+connection refused, host unreachable, etc.
+.SH "SEE ALSO"
+sysmsg(3),
+errno(2)

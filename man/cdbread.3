@@ -1,0 +1,177 @@
+.TH qlibs:cdbread 3
+.SH NAME
+cdbread \- fetch information from a constant database 
+.SH SYNTAX
+.B #include \(dqcdbread.h\(dq
+
+void \fBcdb_init\fP(struct cdb *\fIc\fR,int \fIfd\fR);
+.br
+int \fBcdb_read\fP(struct cdb *\fIc\fR,char *\fIdata\fR,unsigned int \fIdlen\fR,uint32 \fIpos\fR);
+.br
+int \fBcdb_findstart\fP(int \fIfd\fR,char *\fIkey\fR,unsigned int \fIlen\fR);
+.br
+int \fBcdb_findnext\fP(int \fIfd\fR,char *\fIkey\fR,unsigned int \fIlen\fR);
+.br
+int \fBcdb_find\fP(int \fIfd\fR,char *\fIney\fR,unsigned int \fIlen\fR);
+
+.br
+int \fBcdb_findnext\fP(int \fIfd\fR,char *\fIkey\fR,unsigned int \fIlen\fR);
+.br
+void \fBcdb_free\fP(struct cdb *\fIc\fR):
+.SH DESCRIPTION
+.B cdb_free 
+unallocates 
+.I c 
+if 
+.I c 
+is allocated. 
+Otherwise it leaves 
+.I c 
+alone. 
+.B cdb_free 
+does not close 
+.IR fd .
+
+.B cdb_init 
+allocates 
+.B c 
+to hold information about a constant database read by descriptor 
+.IR fd . 
+You may call 
+.B cdb_init 
+repeatedly; if 
+.I c 
+is already allocated, 
+.B cdb_init 
+unallocates it first.
+
+.B cdb_read 
+reads 
+.I dlen 
+bytes into 
+.I d 
+from byte position 
+.I dpos 
+in the database. You must allocate 
+.I c 
+before calling 
+.BR cdb_read . 
+Normally 
+.B cdb_read 
+returns 
+.IR 0 .  
+If the database file is shorter than 
+.I dpos+dlen 
+bytes, or if there is a disk read error, 
+.B cdb_read 
+returns 
+.IR -1 , 
+setting 
+.I errno 
+appropriately.
+
+.B cdb_findstart 
+prepares 
+.I c 
+to search for the first record under a new 
+.IR key . 
+You must allocate 
+.I c 
+before calling 
+.BR cdb_findstart , 
+and you must call
+.B cdb_findstart 
+before calling 
+.BR cdb_findnext .
+
+.B cdb_findnext 
+looks for the nth record under 
+.I key 
+in the database, where 
+.I n 
+is the number of calls to 
+.B cdb_findnext 
+after the most recent call to 
+.BR cdb_findstart . 
+If it finds the record, 
+.B cdb_findnext 
+returns 
+.IR 1 ; 
+if there are exactly n-1 such records, 
+.B cdb_findnext 
+returns 
+.IR 0 ; 
+if there are fewer than n-1 such records, the behavior of 
+.B cdb_findnext 
+is undefined; if there is a database format error or disk error, 
+.B cdb_findnext 
+returns 
+.IR -1 , setting 
+.I errno 
+appropriately. Each call to 
+.B cdb_findnext 
+(before another call to 
+.BR cdb_findstart ) 
+must use the same 
+.I k 
+and 
+.IR klen .
+
+If 
+.B cdb_findnext 
+returns 
+.IR 1 , 
+it arranges for 
+.B cdb_datapos 
+to return the starting byte position of the data in the record, and for 
+.B cdb_datalen 
+to return the number of bytes of data in the record. 
+Otherwise the results of 
+.B cdb_datapos
+and 
+.B cdb_datalen 
+are undefined.
+
+.B cdb_find 
+is the same as 
+.B cdb_findstart 
+followed by 
+.BR cdb_findnext : 
+it finds the first record under 
+.IR key.
+
+.B cdb_datapos 
+and 
+.B cdb_datalen 
+are macros pointing to the found information following
+.I key
+in the cdb and returning their length.
+.SH EXAMPLE
+#include <cdbread.h>
+
+  int fd;
+  char *data;
+  unsigned int len;
+  stralloc key = {0};
+
+  static struct cdb c;
+
+  cdb_init(&c,fd);
+
+  switch (cdb_find(&c,key.s,key.len)) {
+    case -1: return -1;
+    case  0: return 0;
+  }
+
+  len = cdb_datalen(&c);
+  data = alloc(len);
+  if (!data) return -1;
+
+  if (cdb_read(&c,data,datalen,cdb_datapos(&c)) == -1) {
+    alloc_free(data);
+    return -1;
+  }
+
+  cdb_free(&c);
+.SH "SEE ALSO"
+cdbmake(3)

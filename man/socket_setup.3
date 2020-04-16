@@ -1,0 +1,105 @@
+.TH qlibs: socket_setup 3
+.SH NAME
+socket_setup \- listen to or accept socket for incoming TCP connections
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_listen\fP(int \fIs\fR,int \fIn\fR);
+
+int \fBsocket_accept\fP(int \fIs\fR,char \fIip\fR[16],
+                  uint16 *\fIport\fR,uint32 *\fIscope_id\fR);
+                 
+int \fBsocket_ipoptionskill\fR(int \fIs\fR);
+
+int \fBsocket_ip6anycast(\fR(int \fIs\fR);
+
+int \fBsocket_dualstack\fR(int \fIs\fR);
+
+int \fBsocket_nodualstack\fR(int \fIs\fR);
+.SH DESCRIPTION
+.B socket_listen 
+prepares TCP socket \fIs\fR to accept TCP connections.  
+It allows a backlog of approximately \fIn\fR TCP SYNs. 
+(On systems supporting SYN cookies, the backlog is irrelevant.) 
+
+.B socket_accept 
+accepts the connection. It creates a new socket
+for the connection and returns a file descriptor pointing to the new
+socket; you can use the read and write system calls to transmit data
+through that file descriptor.
+Further, it provides information about client's 
+\fIip\fR address and TCP \fIport\fR number
+perhaps together with local receiving interface \fIscope_id\fR. 
+
+.B socket_ipoptionskill
+is used to disable previously defined options in IPv4 or IPv6 packets 
+like Source Routing prior of using this socket for data exchange.
+.B socket_ipoptionskill
+uses the 
+.BR setsockopt .
+
+.B socket_ip6anycast
+enables unspecified reversed anycasting on the listening socket
+.IR s 
+with IPv6 address
+.IR :: .
+Upon receiving IPv6 packets, the socket records the
+incoming IPv6 address and the receiving \fIscope_id\fR
+in order provide additional routing information.
+
+.B socket_dualstack
+and
+.B socket_nodualstack
+can be used to force or forbid dual-stack behavior
+setting the 
+.B setsockopt 
+variable
+.I IPV6_V6ONLY 
+appropriately. In the last case, a potential servers
+needs two instances to accept incoming IPv6 and IPv6 packets.
+.SH "RETURN CODES"
+Normally
+.BR socket_listen ,
+.B socket_accept 
+and
+.B socket_ipotionskill 
+as well as 
+.B socket_dualstack
+and
+.B socket_nodualstack
+return
+.I 0 
+and if anything goes wrong it returns 
+.IR -1 , 
+setting 
+.I errno
+appropriately.
+.SH EXAMPLE
+  #include <socket_if.h>
+
+  int \fIs\fR, \fIt\fR; 
+  int \fIr\fR;
+  char \fIip\fR[16];
+  uint16 \fIp\fR;
+
+  if ((s = socket_tcp()) == -1)
+    strerr_die2sys(111,FATAL,"unable to create TCP socket: ");
+  r = socket_ipoptionskill(s);
+  if (socket_bind_reuse(s,(char *)V6localnet,8002,0) == -1)
+    strerr_die2sys(111,FATAL,"unable to bind: ");
+  if (socket_listen(s,1) == -1)
+    strerr_die2sys(111,FATAL,"unable to listen: ");
+    
+  t = socket_tcp();
+  socket_bind(t,ip,p,0);
+  socket_listen(s,16);
+  socket_accept(t,ip,&p,&scope_id);  
+.SH "SEE ALSO"
+socket_if(3), 
+socket_bind(3), 
+socket_connect(3), 
+socket_info(3),
+socket_recv(3), 
+socket_send(3), 
+socket_tcp(3), 
+socket_udp(3)

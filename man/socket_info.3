@@ -1,0 +1,47 @@
+.TH socket_info 3
+.SH NAME 
+socket_info \- retrieving IP connection information for an existing socket
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_local\fP(int \fIs\fR,char \fIip\fR[16],
+                uint16 *\fIport\fR,uint32 *\fIscope_id\fR);
+
+int \fBsocket_remote\fP(int \fIs\fR,char \fIip\fR[16],
+                uint16 *\fIport\fR,uint32 *\fIscope_id\fR);
+.SH DESCRIPTION
+.B socket_local 
+returns the local IPv6 or IPv4-mapped IPv6 address as \fIip\fR, 
+port as \fIport\fR and perhaps the scope_id as \fIscope_id\fR for the UDP or TCP socket.
+
+.B socket_remote
+returns the remote IPv6 or IPv4-mapped IPv6 address as \fIip\fR, 
+port as \fIport\fR and perhaps the scope_id as \fIscope_id\fR for the UDP or TCP socket.
+
+.SH "RETURN CODES"
+If something goes wrong, 
+.B socket_local 
+and
+.B socket_remote
+return
+.IR -1 , 
+setting 
+.I errno
+appropriately.
+.SH EXAMPLE
+#include <socket_if.h>
+  int \fIs\fR;
+  char \fIip\fR[16];
+  uint16 \fIport\fR;
+
+  if (socket_remote(s,ip,&port,0) == -1)
+    strerr_die2sys(111,FATAL,"unable to get remote address: ");
+.SH "SEE ALSO"
+socket_if(3), 
+socket_bind(3), 
+socket_connect(3), 
+socket_recv(3),
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

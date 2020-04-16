@@ -1,0 +1,91 @@
+.TH taia 3
+.SH NAME
+taia \- Temps Atomique International (Attosecond) time routines
+.SH SYNTAX
+.B #include \(dqtaia.h\(dq
+
+extern int \fBtaia_add\fP(struct taia* \fIt\fR,const struct taia* \fIa\fR,const struct taia* \fIb\fR);
+.br
+extern int \fBtaia_addsec\fP(struct taia* \fIt\fR,const struct taia* \fIs\fR,int \fIsecs\fR);
+.br
+extern int \fBtaia_approx\fP(const struct taia* \fIt\fR);
+.br
+int \fBtaia_frac\fP(const struct taia* \fIt\fR);
+.br
+extern int \fBtaia_less\fP(const struct tai* \fIa\fR,const struct tai* \fIb\fR);
+.br
+extern int \fBtaia_now\fP(struct taia* \fIt\fR);
+.br
+extern int \fBtaia_pack\fP(char* buf,const struct taia* \fIt\fR);
+.br
+extern int \fBtaia_sub\fP(struct taia* \fIt\fR,const struct taia* \fIa\fR,const struct taia* \fIb\fR);
+.br
+extern int \fBtaia_tai\fP(const struct taia* \fIt\fR,struct tai* \fIsec\fR);
+.br
+extern int \fBtaia_uint\fP(struct taia* \fIt\fR,unsigned int \fIsecs\fR);
+.br
+extern int \fBtaia_unpack\fP(const char* buf,struct taia* \fIt\fR);
+.SH DESCRIPTION
+.B taia_add 
+adds \fIa\fR to \fIb\fR and writes the result to \fIt\fR.
+The inputs and output may overlap.
+
+.B taia_addsec 
+adds \fIsecs\fR seconds to \fIs\fR and writes the result to \fIt\fR.
+The inputs and output may overlap.
+
+.B taia_approx 
+returns a double-precision approximation of \fIt\fR. 
+The result of 
+.B taia_approx 
+is always nonnegative.
+
+.B taia_frac 
+returns a double-precision approximation to the fraction part
+of \fIt\fR. The result of 
+.B taia_frac 
+is always nonnegative.
+
+.B taia_less 
+returns 1 if \fIa\fR is less than \fIb\fR, 0 otherwise.
+
+.B taia_now 
+puts the current time into \fIt\fR. More precisely: 
+.B tai_now 
+puts into \fIt\fR its best guess as to the TAI64NA label 
+for the 1-attosecond interval that contains the current time.
+
+This implementation of taia_now assumes that the 
+.I time_t 
+returned from the time function represents the number of TAI seconds since 1970-01-01
+00:00:10 TAI. This matches the convention used by the Olson tz library
+in ``right'' mode.
+
+Beware that many clocks are not set accurately, and even the best
+scientific clocks are nowhere near 1-attosecond accuracy; however, an
+inaccurate clock may still produce reasonably accurate time differences.
+
+.B taia_pack 
+converts a TAI64NA label from internal format in \fIt\fR to external
+TAI64NA format in \fIbuf\fR.
+
+.B taia_sub 
+subtracts \fIb\fR from \fIa\fR and writes the result to \fIt\fR.
+The inputs and output may overlap.
+
+.B taia_tai 
+places into \fIsec\fR the integer part of \fIt\fR.  If \fIt\fR
+contains a TAI64NA label then \fIsec\fR will contain the corresponding
+TAI64 label.
+
+.B taia_uint 
+converts \fIsecs\fR into a struct taia (setting the fractional part to zero).
+
+.B taia_unpack 
+converts a TAI64NA label from external TAI64NA format in
+\fIbuf\fR to internal format in \fIt\fR.
+.SH "SEE ALSO"
+time(1), 
+utime(3), 
+ctime(3), 
+locale(1)

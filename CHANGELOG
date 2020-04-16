@@ -1,0 +1,5 @@
+fehQlibs-09:	First public release based on Qlibs as 
+		a common project of Kai Peter and Erwin Hoffmann.
+fehQlibs-10:	Added IPV6_V6ONLY setsockoptions call.
+		Improved poll handling in iopause.c considering poll RC.
+		Added building of shared libraries + updated docs.

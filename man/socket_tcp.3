@@ -1,0 +1,57 @@
+.TH qlibs: socket_tcp 3
+.SH NAME
+socket_tcp \- setting up TCP sockets
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_tcp4\fP();
+.br
+int \fBsocket_tcp6\fP();
+.br
+int \fBsocket_tcp\fP();
+.SH DESCRIPTION
+.B socket_tcp4 
+creates a non-blocking TCP/IPv4 stream socket and 
+providing a file descriptor pointing to that socket.  
+
+.B socket_tcp6 
+creates a non-blocking TCP/IPv6 stream socket and 
+providing a file descriptor pointing to that socket.
+
+.B socket_tcp
+creates a non-blocking IPv6 TCP/IP socket calling
+.B socket_tcp6 
+unless 
+.IR ipv4socket = 1 ,
+now facilitating
+.BR socket_tcp4 .
+.SH "REMOTE CODES"
+All these routines return
+.IR 0
+except in case of failures, returning
+.I -1 
+and setting 
+.I errno 
+appropriately, without allocating any resources.
+.SH EXAMPLE
+  #include <socket_if.h>
+
+  int \fIt\fR, \fIu\fR;
+  char \fIlocalip\fR[16];
+  char \fIremoteip\fR[16];
+  uint16 \fIp\fR;
+
+  ipv4socket = ip6_isv4mapped(ip);
+  
+  t = socket_tcp();
+  socket_bind(t,localip,0);
+  socket_connect(t,remoteip,p,0);
+.SH "SEE ALSO"
+socket_if(3), 
+socket_bind(3), 
+socket_connect(3), 
+socket_info(3), 
+socket_recv(3), 
+socket_send(3), 
+socket_setup(3), 
+socket_udp(3)

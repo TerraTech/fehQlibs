@@ -1,0 +1,110 @@
+.TH qlibs: socket_connect 3
+.SH NAME
+socket_connect \- initiate or test a socket connection to a remote IPv4/IPv6 address
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_connect4\fP(int \fIs\fR,const char \fIip\fR[4],uint16 \fIport\fR);
+.br
+int \fBsocket_connect6\fP(int \fIs\fR,const char \fIip\fR[16],uint16 \fIport\fR,
+                    uint32 \fIscope_id\fR);
+.br
+int \fBsocket_connect\fP(int \fIs\fR,const char \fIip\fR[16],uint16 \fIport\fR,
+                   uint32 \fIscope_id\fR);
+                    
+int \fBsocket_connected\fP(int \fIs\fR);                    
+.SH DESCRIPTION
+.B socket_connect4 
+attempts to make a connection from TCP or UDP socket \fIs\fR to
+TCP port \fIport\fR on IP address \fIip\fR.
+You can call 
+.B socket_connect4 
+without calling 
+.BR socket_bind4 .  
+This has the effect as first calling 
+.B socket_bind4 
+with IP address 0.0.0.0 and port 0.
+
+.B socket_connect6 
+attempts to make a connection from TCP or UDP socket \fIs\fR to
+TCP port \fIport\fR on IP address \fIip\fR and \fIscope_id\fR.
+The meaning of \fIscope_id\fR is dependent on the implementation and
+IPv6 IP.  For link-local IPv6 addresses it specifies the outgoing
+interface index.  From a given interface name (e.g. "eth0") 
+it's index can be retrieved with
+.BR socket_getifidx .
+\fIscope_id\fR should normally be set to 0.
+You can call 
+.B socket_connect6 
+without calling 
+.BR socket_bind6 .  
+This has the effect as first calling 
+.B socket_bind6 
+with IP address :: and port 0.
+
+.B socket_connect
+attempts to make a connection from TCP socket \fIs\fR to
+TCP port \fIport\fR on IP address \fIip\fR and \fIscope_id\fR 
+calling
+.BR socket_connect6 .
+If however,  \fIip\fR is an IPv4 or IPv4-mapped IPv6 address
+.B socket_connect4
+is called instead.
+
+Once a socket is connected, you can use the read and write
+system calls to transmit data.
+
+.B socket_connected 
+can be used to verify, whether a background connection failed or
+succeeded, thus \fIs\fR became writable or not.
+.SH EXAMPLE
+  #include <socket_if.h>
+
+  int \fIs\fR;
+  char \fIlocalip\fR[16];
+  char \fIremoteip\fR[16];
+  uint16 \fIp\fR = 0;
+
+  s = socket_tcp();
+  socket_bind(s,localip,p,0);
+  socket_connect(s,remoteip,p,0);
+  
+  if (socket_connected(s) != 1)
+    strerr_die2sys(111,fatal,"unable to setup TCP connection: ");
+.SH "RETURN CODES"
+.BR socket_connect4 ,
+.BR socket_connect6 
+and
+.BR socket_connect 
+may return
+.IR 0 , 
+to indicate that the connection succeeded (and succeeded immediately,
+if the socket is non-blocking)
+.IR -1 ,
+setting 
+.I errno 
+to error_inprogress or error_wouldblock, to indicate
+that the socket is non-blocking
+.IR -1 ,
+setting 
+.I errno 
+to something else, to indicate that the connection
+failed (and failed immediately, if the socket is non-blocking).
+
+.B socket_connected 
+returns 
+.I 1 
+if \fIs\fR is a socket and a connection is established, 
+.I 0 
+otherwise and setting 
+.I errno 
+appropriately.
+.SH "SEE ALSO"
+socket_if(3), 
+socket_info(3), 
+socket_bind(3), 
+socket_recv(3),
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

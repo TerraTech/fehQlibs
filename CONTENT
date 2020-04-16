@@ -1,0 +1,68 @@
+Content of fehQlibs
+-------------------
+
+This list contains the generated archive and supplementary
+object files together with their main header files (to be
+found under ./include) and man pages (located at ./man).
+The list is incomplete.
+
+Archive/Object  | Headers     | Description
+-----------------------------------------------
+alloc.a           alloc.h       alloc.3
+buffer.a          buffer.h      buffer.3
+                  byte.h        byte.3
+case.a            case.h        case.3
+cdb.a             cdbmake.h     cdbmake.3
+                  cdbread.h     cdbread.3 
+dnsresolv.a       dnsresolv.h   dns.3, dnsstub.3
+env.a             env.h         env.3
+fd.a              fd.h          fd.3
+fs.a              fmt.h         fmt.3
+                  scan.h        scan.3
+getln.a           getln.h       getln.3
+getopt.a          getoptb.h     getoptb.3
+ip.a              ip.h          ip4.3, ip6.3
+lock.a            lock.h
+logmsg.a          logmsg.h      logmsg.3
+                  error.h       error.3
+ndelay.a          ndelay.h
+open.a            open.h
+seek.a            seek.h
+sig.a             sig.h
+socket.a          socket_if.h   socket_bind.3, socket_connect.3
+                  ip.h          socket_if.3, socket_info.3
+                                socket_recv.3, socket_send.3
+                                socket_setup.3, socket_tcp.3
+                                socket_udp.3
+str.a             str.h
+stralloc.a        stralloc.h    stralloc.3
+time.a            tai.h,        taia.3
+                  timeout.h     timeout.3
+                  timeoutconn.h timeoutconn.3
+                  iopause.h     iopause.3
+                  select.h  
+wait.a            wait.h        wait.3
+
+pathexec.o        pathexec.h    pathexec.3
+prot.o            prot.h
+byte.o            byte.h        byte.3
+                  base64.h
+readclose.o       readclose.h
+uint32p.o         uint_t.h
+uint64p.o         uint_t.h
+uint128p.o        uint_t.h
+
+
+Two main archives are generated:
+
+- (lib)qlibs.a  -- including all above, except for
+- (lib)dnsresolv.a  -- routines located at ./dnsstub.
+
+Upon calling 'make share' the following 'PIC' shared libs are provided:
+
+- libqlibs.so
+- libdnsresolv.so
+
+
+
+

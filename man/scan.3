@@ -1,0 +1,73 @@
+.TH qlibs: scan 3
+.SH NAME
+scan \- string to integer conversion
+.SH SYNTAX
+.B #include \(dqscan.h\(dq
+
+unsigned int \fBscan_8long\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+.br
+unsigned int \fBscan_uint\fP(const char *\fIsrc\fR,int *\fIdest\fR);
+.br
+unsigned int \fBscan_ulong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+.br
+unsigned int \fBscan_xint\fP(const char *\fIsrc\fR,int *\fIdest\fR);
+.br
+unsigned int \fBscan_xlong\fP(const char *\fIsrc\fR,unsigned long *\fIdest\fR);
+.SH DESCRIPTION
+.B scan_8long 
+parses an unsigned long integer in octal ASCII representation
+from \fIsrc\fR and writes the result into \fIdest\fR. It returns the
+number of bytes read from \fIsrc\fR.
+
+.B scan_uint 
+parses an unsigned integer in decimal ASCII representation
+from \fIsrc\fR and writes the result into \fIdest\fR. It returns the
+number of bytes read from \fIsrc\fR.
+
+.B scan_ulong 
+parses an unsigned long integer in decimal ASCII representation
+from \fIsrc\fR and writes the result into \fIdest\fR. It returns the
+number of bytes read from \fIsrc\fR.
+Leading + or - or space (or anything outside of 0-9) is not accepted.
+The libc conventions of "023" for octal or "0x23" for hexadecimal are
+not supported.
+.B scan_ulong 
+will abort the scan if the next character is not a digit, or
+if it is a digit but adding it to the number would lead to an integer
+overflow.
+.B scan_ulong 
+returns the number of characters successfully scanned and
+processed from src.
+
+.B scan_xint 
+parses an unsigned integer in hexadecimal ASCII representation
+from \fIsrc\fR and writes the result into \fIdest\fR. It returns the
+number of bytes read from \fIsrc\fR.
+
+.B scan_xlong 
+parses an unsigned long integer in hexadecimal ASCII
+representation from \fIsrc\fR and writes the result into \fIdest\fR. It
+returns the number of bytes read from \fIsrc\fR.
+.B scan_xlong 
+understands both upper and lower case letters.
+.B scan_xlong 
+does not expect or understand a "0x" prefix.
+.SH EXAMPLES
+scan_ulong("23",&i) -> i=23, return 2
+
+scan_ulong("+23",&i) -> return 0
+
+scan_ulong("-23",&i) -> return 0
+
+scan_ulong(" 23",&i) -> return 0
+
+scan_ulong("23,42",&i) -> i=23, return 2
+
+scan_ulong("023",&i) -> i=23, return 3
+
+scan_ulong("0x23",&i) -> i=0, return 1
+
+scan_ulong("4294967296",&i) -> i=429496729, return 9 // 32-bit system
+.SH "SEE ALSO"
+case(3), 
+byte(3)

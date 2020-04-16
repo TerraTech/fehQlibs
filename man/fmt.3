@@ -1,0 +1,90 @@
+.TH qlibs: fmt 3
+.SH NAME
+fmt \- ASCII representation of strings and integers
+.SH SYNTAX
+.B #include \(dqfmt.h\(dq
+
+unsigned int \fBfmt_str\fP(char *\fIdest\fR,const char *\fIsource\fR);
+.br
+unsigned int \fBfmt_strn\fP(char *\fIdest\fR,const char *\fIsource\fR,unsigned int \fImaxlen\fR);
+
+unsigned int \fBfmt_uint\fP(char *\fIdest\fR,unsigned int \fIsource\fR);
+.br
+unsigned int \fBfmt_uint0\fP(char *\fIdest\fR,unsigned int \fIsource\fR,unsigned int \fIn\fR);
+.br
+unsigned int \fBfmt_ulong\fP(char *\fIdest\fR,unsigned long \fIsource\fR);
+.br
+unsigned int \fBfmt_xlong\fP(char *\fIdest\fR,unsigned long \fIsource\fR);
+.br 
+char \fBtohex\fP(char \fInum\fR);
+.br
+int \fBfromhex\fP(unsigned char \fIc\fR);
+.SH DESCRIPTION
+.B fmt_str 
+copies all leading nonzero bytes from \fIsource\fR to \fIdest\fR
+and returns the number of bytes it copied.
+.B fmt_str 
+does not append \\0.
+
+.B fmt_strn
+copies at most \fImaxlen\fR leading nonzero bytes from
+\fIsource\fR to \fIdest\fR and returns the number of bytes it copied.
+.B fmt_strn 
+does not append \\0.
+
+.B fmt_uint 
+writes an ASCII representation ('0' to '9', base 10) of
+\fIsource\fR to \fIdest\fR and returns the number of bytes written.
+.B fmt_uint 
+does not append \\0.
+
+.B fmt_uint0 
+writes an ASCII representation ('0' to '9', base 10) of
+\fIsource\fR to \fIdest\fR and returns the number of bytes written.
+The output is padded with '0'-bytes until it encompasses at least
+\fIn\fR bytes, but it will not be truncated if it does not fit.
+.B fmt_uint0 
+does not append \\0.
+
+.B fmt_ulong 
+writes an ASCII representation ('0' to '9', base 10) of
+\fIsource\fR to \fIdest\fR and returns the number of bytes written
+perhaps including a trailing \\0.
+.B fmt_ulong 
+does not append \\0.
+
+.B fmt_xlong 
+writes an ASCII representation ('0' to '9' and 'a' to 'f', base 16) 
+of \fIsource\fR to \fIdest\fR and returns the number of bytes
+written.
+.B fmt_xlong 
+does not append \\0.
+
+.B tohex
+reads the ASCII representation of a decimal \fInum\fR and returns its 
+hexadecimal ASCII value; thus \'0\' -> \'0\' ... \'9\' -> \'9\',  
+\'10\' -> \'a\' and finally \'15\' -> f'.
+
+.B fromhex
+reads the ACSII representation of a hexadecimal number \'0\' to \'f\' 
+irrelevant of its case and returns its integer value. 
+
+For convenience, 
+.B fmt.h 
+defines the integers
+.I FMT_LEN
+and
+.I FMT_ULONG
+to be big enough to the number of bytes it would have written.
+
+
+.SH "RETURN CODES"
+If \fIdest\fR equals FMT_LEN (i.e. is zero), all
+.B fmt_* 
+routins return the number of bytes it would have written
+i.e. the number of leading nonzero bytes of \fIsource\fR 
+perhaps including a \\0.
+.SH "SEE ALSO"
+byte(3), 
+case(3), 
+scan(3)

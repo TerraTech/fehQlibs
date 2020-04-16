@@ -1,0 +1,42 @@
+AUTHOR
+======
+
+Author:
+	Dr. Erwin Hoffmann - FEHCom Germany
+Web-Site: 	
+	https://www.fehcom.de
+E-Mail: 	
+	feh@fehcom.de
+
+
+LICENSE
+=======
+
+fehQlibs is free software placed into the Public Domain. 
+fehQlibs is based on D.J. Bernstein's 'qmail' and 'ucspi-tcp' also put in the Public Domain.
+
+This includes:
+	You can download and use fehQlibs (and parts of it) as you like.
+	You can modify the source code without notification to or permission by the author.
+Please check:
+	http://www.cr.yp.to/softwarelaw.html
+Note: 
+	fehQlibs may use/may depend on third party software with different 
+	license and/or distribution conditions. 
+
+
+FITNESS
+=======
+
+The Author does not guarantee a specific fitness of fehQlibs.
+If you use fehQlibs, it's on your own risk.
+
+
+DISTRIBUTION
+============
+
+fehQlibs may be included in ports and packages under the following conditions:
+
+	- The files VERSION and BUILD has to be part of the distribution. 	
+	- This LICENSE file has to be included in the distribution.
+

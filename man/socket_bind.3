@@ -1,0 +1,119 @@
+.TH qlibs: socket_bind 3
+.SH NAME
+socket_bind \- binding a TCP/UDP socket to a local IP address, port, 
+and perhaps scope_id
+.SH SYNTAX
+.B #include \(dqsocket_if.h\(dq
+
+int \fBsocket_bind4\fP(int \fIs\fR,char \fIip\fR[4],uint16 \fIport\fR);
+.br
+int \fBsocket_bind4_reuse\fP(int \fIs\fR,char \fIip\fR[4],uint16 \fIport\fR);
+
+int \fBsocket_bind6\fP(int \fIs\fR,char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
+.br
+int \fBsocket_bind6_reuse\fP(int \fIs\fR,char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
+                       
+int \fBsocket_bind\fP(int \fIs\fR,char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);
+.br                                                      
+int \fBsocket_bind_reuse\fP(int \fIs\fR,char \fIip\fR[16],uint16 \fIport\fR,uint32 \fIscope_id\fR);       
+.SH DESCRIPTION
+.B socket_bind4 
+sets the local IP address and TCP/UDP port of a TCP/UDP
+socket \fIs\fR to \fIip\fR and \fIport\fR respectively.
+
+.B socket_bind4_reuse 
+sets the local IP address and TCP/UDP port of a
+TCP/UDP socket \fIs\fR to \fIip\fR and \fIport\fR respectively.
+Unlike 
+.BR socket_bind4 ,
+this function will also tell the operating system
+that the address is to be reused soon, which turns off the normal pause
+before this IP and port can be bound again.
+
+.B socket_bind6 
+sets the local IP address and TCP/UDP port of a TCP/UDP
+socket \fIs\fR to \fIip\fR, \fIport\fR and \fIscope_id\fR respectively.
+
+.B socket_bind6_reuse 
+sets the local IP address and TCP/UDP port of a TCP/UDP socket \fIs\fR 
+to \fIip\fR, \fIport\fR and \fIscope_id\fR respectively.
+Unlike 
+.BR socket_bind6 ,
+this function will also tell the operating system
+that the address is to be reused soon, which turns off the normal pause
+before this IP and port can be bound again.
+
+.B socket_bind
+sets the local IPv4/IPv6 address and TCP/UDP port of a TCP/UDP
+socket \fIs\fR to \fIip\fR, \fIport\fR, and \fIscope_id\fR respectively.
+
+For IPv4 and IPv4-mapped IPv6 addresses
+.B socket_bind 
+will use
+.B socket_bind4 
+or otherwise
+.BR socket_bind6 .
+
+.B socket_bind_reuse
+sets the local IPv4/IPv6 address and TCP/UDP port of a TCP/UDP socket \fIs\fR
+to \fIip\fR, \fIport\fR, and \fIscope_id\fR respectively.
+Unlike
+.BR socket_bind ,
+this function will also tell the operating system
+that the address is to be reused soon, which turns off the normal pause
+before this IP and port can be bound again.
+
+For IPv4 and IPv4-mapped IPv6 addresses
+.B socket_bind_reuse
+will use
+.B socket_bind4_reuse
+or otherwise
+.BR socket_bind6_reuse .
+.SH "AUTOMATIC BINDING"
+If the IPv4 address is 0 or the IPv6 address is ::, the operating system 
+chooses a local IP address.  
+If \fIport\fR is 0, the operating system chooses a port.
+\fIscope_id\fR is usually 0, except for IPv6 LLU addresses where
+.B socket_getifidx
+can be used to determine 
+.I scope_id
+from the interface name.
+.SH "RETURN CODES"
+Normally, all 
+.I socket_bind* 
+routines return 
+.IR 0 . 
+If anything goes wrong, the return code is
+.I -1 
+and setting 
+.I errno 
+appropriately.
+.SH EXAMPLE
+  #include <socket_if.h>
+  #include <ip.h>
+
+  int \fIs\fR;
+  char \fIlcoalip\fR[16];
+  char \fIremoteip\fR[16];
+  uint16 \fIp\fR = 0;
+  uint32 \fIscope_id\fR = 0;
+
+  ipv4socket = ip6_isv4mapped(ip);
+
+  s = socket_tcp();
+  if (s == -1)
+    strerr_die2sys(111,fatal,"unable to create TCP socket: ");
+
+  if (socket_bind_reuse(s,loalip,p,scope_id) == -1)
+    strerr_die2sys(111,fatal,"unable to bind TCP socket: ");
+
+  socket_connect(s,remoteip,p,scope_id);
+.SH "SEE ALSO"
+socket_if(3), 
+socket_connect(3), 
+socket_info(3), 
+socket_recv(3),
+socket_send(3), 
+socket_setup(3), 
+socket_tcp(3), 
+socket_udp(3)

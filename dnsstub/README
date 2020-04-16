@@ -1,0 +1,76 @@
+Stub Resolver:
+
+Simple DJBDNS stub-resolver based on 'djbdns-1.05(IPv6)' allowing for each 
+calling application individually to include up to 16 DNSCACHEIP(s) 
+as DNS forwarding/resolving servers to be tried sequentially.
+
+IP Addresses:
+
+Here,
+ - global IPv6,
+ - IPv6 ULA, and
+ - IPv6 LLU addresses with a given Interface-Id
+can be specified. The IPv4 format could be either a 
+ - legacy dotted-decimal or a
+ - IPv4-mapped IPv6 address.
+
+In any case, compactified IPv6 addresses are understood.
+
+Resolver Call:
+
+If $DNSCACHEIP is not provided as environment variable, the stub-resolver
+will use the system-wide 
+  - /etc/resolv.conf 
+file; however now without the capability for IPv6 LLU addresses.
+While IPv4-mapped IPv6 addresses are supported here by default as well, 
+care has to taken not to jeopardize other client's usage.
+
+Name Qualification:
+
+If provided, the stub-resolver uses either a system-wide configuration file
+  - /etc/dnsrewritefile or assumes this file to available as given in
+  - $DNSREWRITEFILE 
+in order to define persistent mapping-rules of local domain names to public 
+ones (for lookup) or IP addresses (for direct matching).
+
+Local domain name can be alternatively specified (per application) using
+the environment variable
+  - $LOCALDOMAIN
+to be appended to unqualified hostnames dynamically. This is roughly equivalent
+with the 'search' string in /etc/resolv. Several domains names may be
+specified within $LOCALDOMAIN separated by blanks.
+
+See: https://cr.yp.to/djbdns/qualify.html
+
+Internals:
+
+* UDP message size:
+Unlike other implementations, this DNS stub-resolver supports UDP packet 
+sizes up to 1028 byte without the need for (E)DNS0 packet enhancements. 
+
+* DNS UDP query retrials:
+In case the NS is not able to initally reply to the query, 
+it is retried again at the intervalls {3, 9, 27, 81} secs.
+
+* NS qualification/sorting for NS replies:
+NS qualification is not supported (yet), thus we use a randomly sorted
+list of NS IP addresses. 
+In case ipv4socket > 0; only NS with IPv4 addresses are considered.
+
+* Query/Reply to/from DNS Cache servers/forwarders:
+Neither message (CurveDNS) nor transport layer (TLS) encryption is provided;
+the sub-resolver 'trusts' it's upstream caches/forwarders. We recommend to
+setup communication on private IPv4/IPv6 addresses; if applicable.
+
+
+Environment Variables Read:
+
+$DNSCACHEPIP	The upstream resolver's IP[v4|v6] addresses (up to 32).
+	IPv6 LLU addresses may be suffixed with the interface name.
+$DNSREWRITEFILE Alternate location for the system-wide
+	/etc/dnsrewritefile
+$LOCALDOMAIN 	Additional local domain name appended to unqualified
+	hostnames dynamically. 
+
+
+Erwin Hoffmann, August 2018.

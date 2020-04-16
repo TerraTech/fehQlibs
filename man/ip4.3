@@ -1,0 +1,87 @@
+.TH qlibs: ipv4
+.SH NAME
+ipv4 \- IPv4 address evaluation and conversion 
+.SH SYNTAX
+.B #include \(dqip.h\(dq
+
+unsigned int \fBip4_fmt\fP(char *\fIs\fR,char \fIip[4]\fR);
+.br
+unsigned int \fBip4_scan\fP(const char *\fIs\fR,char \fIip[4]\fR);
+.br
+unsigned int \fBip_scan\fP(char *\fIs\fR,char \fIip[4]\fR);
+.br
+unsigned int \fBip4_scanbracket\fP(char *\fIs\fR,char \fIip[4]\fR);
+.br
+unsigned int \fBip_scanbracket\fP(char *\fIip_str\fR,char *\fIs\fR);
+.br
+unsigned int \fBip4_cidr\fP(char *\fIs\fR,char \fIip[4]\fR,unsigned long *\fIplen\fR);
+.br
+unsigned int \fBip4_bytestring\fP(stralloc *\fIip4string\fR,char \fIip[4]\fR,int \fIplen\fR);
+.SH DESCRIPTION
+.B ip4_fmt
+reads the
+.I char[4] 
+IPv4 address and returns a dotted-decimal IPv4 address string
+.IR 1.2.3.4 .
+
+.B ip4_scan
+reads an IPv4 address string 
+.I 1.2.3.4 
+and converts it to the
+.I char[4] 
+IPv4 address.
+
+.B ip_scan
+calls 
+.B ip4_san
+in compatibility mode with the first argument als input and
+the second as output. Upon detecting an IPv6 address it calls
+.I ip6_scan
+and otherwise
+.IR ip4_scan .
+
+.B ip4_scanbracket
+reads an IPv4 address string enclosed in brackets
+.I [1.2.3.4]
+removes the brackets and calls
+.B ip4_scan  
+on the result.
+
+.B ip_scanbracket
+reads an IP address string enclosed in brackets
+.I [1.2.3.4]
+or
+.IR [fe80::1] ,
+removes the brackets and calls
+.B ip4_scan  
+or
+.B ip6_scan
+upon detecting an IPv6 address on the result.
+
+.B ip4_cidr
+reads the CIDR IPv4 address string
+.I 1.2.3.4/15 
+determines the prefix as integer
+.I plen
+and calls 
+.BR ip4_scan .
+If no prefix is identified, it returns 32.
+
+.B ip4_bytestring
+reads the IPv4 address given as
+.I char[4]
+while returning the 'bytestring' representation
+.I 1001001....
+up to the given prefix length
+.IR plen .
+.SH "RETURN CODES"
+The 
+.B ip(4)*
+programs return the number of bytes processed;
+except for 
+.B ip4_bytestring
+returning 
+.I 0
+on success; others on failure.
+.SH "SEE ALSO"
+ip6(3), socket_if(3)
