@@ -75,6 +75,6 @@ int dns_name(stralloc *out,const char ip[16])
 {
   if (ip6_isv4mapped(ip))
     return dns_name4(out,ip+12);
-  else 
+  else
     return dns_name6(out,ip);
 }

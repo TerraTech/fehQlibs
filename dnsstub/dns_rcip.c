@@ -100,7 +100,7 @@ int dns_resolvconfip(char s[QUERY_MAXIPLEN],uint32 scope[QUERY_MAXNS])
   if (!uses) ok = 0;
 
   if (!ok) {
-    if (init(ip,scopes) == -1) return DNS_INT;
+    if (init(ip,scopes) < 0) return DNS_INT;
     taia_uint(&deadline,600);
     taia_add(&deadline,&now,&deadline);
     uses = 10000;

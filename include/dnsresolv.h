@@ -29,7 +29,7 @@
 
 #define DNS_MEM  -1
 #define DNS_ERR  -2              /* parsing errors and others */
-#define DNS_COM  -4              /* (socket) communication errors */
+#define DNS_COM  -3              /* (socket) communication errors */
 #define DNS_INT  -4              /* internal errors */
 
 #define MSGSIZE MTUSIZE       /* aggressive */

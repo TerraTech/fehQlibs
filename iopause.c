@@ -1,3 +1,4 @@
+#include <poll.h>
 #include "taia.h"
 #include "select.h"
 #include "iopause.h"
@@ -7,6 +8,7 @@
 	@author djb
 	@source qmail
 	@brief stateful reading from net
+  @return > 0 if successful
 */
 
 int iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *stamp)
@@ -31,8 +33,8 @@ int iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *st
     x[i].revents = 0;
 
 #ifdef IOPAUSE_POLL
-
   r = poll(x,len,millisecs);
+
   /* XXX: some kernels apparently need x[0] even if len is 0 */
   /* XXX: how to handle EAGAIN? are kernels really this dumb? */
   /* XXX: how to handle EINVAL? when exactly can this happen? */
@@ -63,6 +65,7 @@ int iopause(iopause_fd *x,unsigned int len,struct taia *deadline,struct taia *st
 
   r = select(nfds,&rfds,&wfds,(fd_set *) 0,&tv);
   if (r <= 0) return r;
+
   /* XXX: for EBADF, could seek out and destroy the bad descriptor */
 
   for (i = 0; i < len; ++i) {

@@ -128,7 +128,7 @@ int dns_resolvconfrewrite(stralloc *out)
   if (!uses) ok = 0;
 
   if (!ok) {
-    if (init(&rules) == -1) return DNS_INT;
+    if (init(&rules) < 0) return DNS_INT;
     taia_uint(&deadline,600);
     taia_add(&deadline,&now,&deadline);
     uses = 10000;

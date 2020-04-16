@@ -63,7 +63,7 @@ int dns_ip4_qualify_rules(stralloc *out,stralloc *fqdn,const stralloc *in,const 
     j = byte_chr(fqdn->s + i,fqdnlen - i,'+');
     byte_copy(fqdn->s + plus,j,fqdn->s + i);
     fqdn->len = plus + j;
-    if ((rc = dns_ip4(out,fqdn)) < 0) return DNS_INT;
+    if ((rc = dns_ip4(out,fqdn)) < 0) return DNS_ERR;
     if (rc) return 0;
     i += j;
     if (i >= fqdnlen) return 0;

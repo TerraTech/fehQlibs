@@ -20,3 +20,4 @@ fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
 fehQlibs-13a: Fixed wrong input boundary checking for multiple
 	DNSCACHE variables settings in dns_rcip.c. (Tx. J.W.)
 fehQlibs-13b:	Added missing str_copyb() function in str.c.
+fehQlibs-13c: DNS stub return codes straightend with djbdnscurve6-36.

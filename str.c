@@ -8,38 +8,6 @@
 	@brief string handling functions
 */
 
-unsigned int str_copyb(register char *s,register char *t,unsigned int max)
-{
-  register int len;
-
-  len = 0;
-
-  while (max-- > 0) {
-    if (!(*s = *t)) return len; ++s; ++t; ++len;
-    if (!(*s = *t)) return len; ++s; ++t; ++len;
-    if (!(*s = *t)) return len; ++s; ++t; ++len;
-    if (!(*s = *t)) return len; ++s; ++t; ++len;
-  }
-
-  return len;
-}
-
-unsigned int str_chr(register char *s,int c) 
-{
-  register char ch;
-  register char *t;
-
-  ch = c;
-  t = s;
-  for (;;) {
-    if (!*t) { break; } if (*t == ch) { break; } ++t;
-    if (!*t) { break; } if (*t == ch) { break; } ++t;
-    if (!*t) { break; } if (*t == ch) { break; } ++t;
-    if (!*t) { break; } if (*t == ch) { break; } ++t;
-  }
-  return t - s;
-}
-
 unsigned int str_copy(register char *s,register char *t) 
 {
   register int len;
@@ -51,6 +19,22 @@ unsigned int str_copy(register char *s,register char *t)
     if (!(*s = *t)) { return len; } ++s; ++t; ++len;
     if (!(*s = *t)) { return len; } ++s; ++t; ++len;
   }
+}
+
+unsigned int str_copyb(register char *s,register char *t,unsigned int max)
+{
+  register int len;
+
+  len = 0;
+
+  while (max-- > 0) {
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+    if (!(*s = *t)) { return len; } ++s; ++t; ++len;
+  }
+
+  return len;
 }
 
 int str_diff(register char *s,register char *t) 
@@ -92,6 +76,22 @@ unsigned int str_len(register char *s)
     if (!*t) { return t - s; } ++t;
     if (!*t) { return t - s; } ++t;
   }
+}
+
+unsigned int str_chr(register char *s,int c) 
+{
+  register char ch;
+  register char *t;
+
+  ch = c;
+  t = s;
+  for (;;) {
+    if (!*t) { break; } if (*t == ch) { break; } ++t;
+    if (!*t) { break; } if (*t == ch) { break; } ++t;
+    if (!*t) { break; } if (*t == ch) { break; } ++t;
+    if (!*t) { break; } if (*t == ch) { break; } ++t;
+  }
+  return t - s;
 }
 
 unsigned int str_rchr(register char *s,int c) 
