@@ -8,6 +8,22 @@
 	@brief string handling functions
 */
 
+unsigned int str_copyb(register char *s,register char *t,unsigned int max)
+{
+  register int len;
+
+  len = 0;
+
+  while (max-- > 0) {
+    if (!(*s = *t)) return len; ++s; ++t; ++len;
+    if (!(*s = *t)) return len; ++s; ++t; ++len;
+    if (!(*s = *t)) return len; ++s; ++t; ++len;
+    if (!(*s = *t)) return len; ++s; ++t; ++len;
+  }
+
+  return len;
+}
+
 unsigned int str_chr(register char *s,int c) 
 {
   register char ch;

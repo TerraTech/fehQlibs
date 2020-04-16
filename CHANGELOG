@@ -19,4 +19,4 @@ fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
 		Added: man str(3)
 fehQlibs-13a: Fixed wrong input boundary checking for multiple
 	DNSCACHE variables settings in dns_rcip.c. (Tx. J.W.)
-
+fehQlibs-13b:	Added missing str_copyb() function in str.c.
