@@ -4,7 +4,7 @@ logmsg \- handle system errors and application log messages
 .SH SYNTAX
 .B #include \(dqlogmsg.h\(dq
 
-int logmsg(char *who, int ecode, unsigned int classs, char *msg)
+int logmsg(const char *who, int ecode, unsigned int classs, char *msg)
 
 \fBerr_sys\fR(w,e) logmsg(w,e,FATAL,"")
 .br

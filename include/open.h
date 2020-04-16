@@ -7,10 +7,10 @@
 	@source s/qmail
 */
 
-int open_read(char *);
-int open_excl(char *);
-int open_append(char *);
-int open_trunc(char *);
-int open_write(char *);
+int open_read(const char *);
+int open_excl(const char *);
+int open_append(const char *);
+int open_trunc(const char *);
+int open_write(const char *);
 
 #endif

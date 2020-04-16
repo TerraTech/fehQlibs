@@ -4,11 +4,11 @@ pathexec \- run a program within a given environment
 .SH SYNTAX
 .B #include \(dqpathexec.h\(dq
 
-\fBpathexec_run\fP(char *\fIp\fR,char **\fIa\fR,char **\fIe\fR);
+\fBpathexec_run\fP(const char *\fIp\fR,char **\fIa\fR,char **\fIe\fR);
 .br
-\fBpathexec\fP(char **\fIa\fR);
+\fBpathexec\fP(char *const *\fIa\fR);
 .br
-\fBpathexec_env\fP(char *\fIs\fR,char *\fIt\fR);
+\fBpathexec_env\fP(const char *\fIs\fR,char *\fIt\fR);
 .SH DESCRIPTION
 .B pathexec_run 
 searches for a program named 

@@ -14,6 +14,7 @@ extern void byte_copy();
 extern void byte_copyr();
 extern int byte_diff();
 extern void byte_zero();
+extern void byte_fill();
 
 #define byte_equal(s,n,t) (!byte_diff((s),(n),(t)))
 

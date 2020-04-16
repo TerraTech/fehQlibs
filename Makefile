@@ -30,7 +30,7 @@ libs: obj core qlibs.a dnsresolv.a
 
 obj:
 	@echo Making all in qlibs ...
-	$(COMPILE) $(CCFLAGS) $(SRCS)
+	$(COMPILE) $(CCFLAGS) $(CFLAGS) $(SRCS)
 
 install: setup
 
@@ -39,11 +39,11 @@ setup:
 
 shared: $(COMPILE) $(SHAREDLIB) $(OBJS) ./dnsstub/$(OBJS)
 	@echo Building shared qlibs ...
-	$(SHAREDLIB) $(OBJS) -o libqlibs.so 
-	$(SHAREDLIB) ./dnsstub/$(OBJS) -o libdnsresolv.so
+	$(SHAREDLIB) $(LDFLAGS) $(OBJS) -o libqlibs.so 
+	$(SHAREDLIB) $(LDFLAGS) ./dnsstub/$(OBJS) -o libdnsresolv.so
  
 qlibs.a: obj socket.a 
-	$(MAKELIB) qlibs.a *.o 
+	$(MAKELIB) $(LDFLAGS) qlibs.a *.o 
 	ln -sf qlibs.a libqlibs.a
 
 dnsresolv.a:
@@ -54,66 +54,66 @@ dnsresolv.a:
 
 socket.a: ip.a
 	@echo "Building socket lib ..."
-	$(MAKELIB) socket.a socket_if.o socket_bind.o socket_connect.o \
+	$(MAKELIB) $(LDFLAGS) socket.a socket_if.o socket_bind.o socket_connect.o \
 	socket_info.o socket_setup.o socket_tcp.o socket_udp.o ip.a 
 
 # build each file separately (backwards compat) - better use recipe qlibs.a
 alloc.a: alloc.o
-	$(MAKELIB) alloc.a alloc.o
+	$(MAKELIB) $(LDFLAGS) alloc.a alloc.o
 
 buffer.a: buffer.o
-	$(MAKELIB) buffer.a buffer.o 
+	$(MAKELIB) $(LDFLAGS) buffer.a buffer.o 
 
 case.a: case.o
-	$(MAKELIB) case.a case.o
+	$(MAKELIB) $(LDFLAGS) case.a case.o
 
 cdb.a: cdbread.o cdbmake.o uint32p.o seek.o buffer.o
-	$(MAKELIB) cdb.a cdbread.o cdbmake.o uint32p.o seek.o buffer.o
+	$(MAKELIB) $(LDFLAGS) cdb.a cdbread.o cdbmake.o uint32p.o seek.o buffer.o
 
 env.a: env.o
-	$(MAKELIB) env.a env.o
+	$(MAKELIB) $(LDFLAGS) env.a env.o
 
 fd.a: fd.o
-	$(MAKELIB) fd.a fd.o
+	$(MAKELIB) $(LDFLAGS) fd.a fd.o
 
 fs.a: fmt.o scan.o
-	$(MAKELIB) fs.a fmt.o scan.o
+	$(MAKELIB) $(LDFLAGS) fs.a fmt.o scan.o
 
 getln.a: getln.o
-	$(MAKELIB) getln.a getln.o
+	$(MAKELIB) $(LDFLAGS) getln.a getln.o
 
 getopt.a: getoptb.o
-	$(MAKELIB) getopt.a getoptb.o
+	$(MAKELIB) $(LDFLAGS) getopt.a getoptb.o
 
 ip.a: ip4.o ip6.o socket_if.o
-	$(MAKELIB) ip.a ip4.o ip6.o socket_if.o
+	$(MAKELIB) $(LDFLAGS) ip.a ip4.o ip6.o socket_if.o
 
 lock.a: lock.o
-	$(MAKELIB) lock.a lock.o
+	$(MAKELIB) $(LDFLAGS) lock.a lock.o
 
 ndelay.a: ndelay.o
-	$(MAKELIB) ndelay.a ndelay.o
+	$(MAKELIB) $(LDFLAGS) ndelay.a ndelay.o
 
 open.a: open.o
-	$(MAKELIB) open.a open.o
+	$(MAKELIB) $(LDFLAGS) open.a open.o
 
 seek.a: seek.o
-	$(MAKELIB) seek.a seek.o
+	$(MAKELIB) $(LDFLAGS) seek.a seek.o
 
 sig.a: sig.o
-	$(MAKELIB) sig.a sig.o
+	$(MAKELIB) $(LDFLAGS) sig.a sig.o
 
 str.a: str.o byte.o stralloc.o alloc.o
-	$(MAKELIB) str.a str.o byte.o stralloc.o alloc.o
+	$(MAKELIB) $(LDFLAGS) str.a str.o byte.o stralloc.o alloc.o
 
 stralloc.a: stralloc.o alloc.o
-	$(MAKELIB) stralloc.a stralloc.o alloc.o
+	$(MAKELIB) $(LDFLAGS) stralloc.a stralloc.o alloc.o
 
 logmsg.a: errstr.o logmsg.o
-	$(MAKELIB) logmsg.a errstr.o logmsg.o
+	$(MAKELIB) $(LDFLAGS) logmsg.a errstr.o logmsg.o
 
 time.a: iopause.o tai.o taia.o timeout.o timeoutconn.o
-	$(MAKELIB) time.a iopause.o tai.o taia.o timeout.o timeoutconn.o
+	$(MAKELIB) $(LDFLAGS) time.a iopause.o tai.o taia.o timeout.o timeoutconn.o
 
 wait.a: wait.o
-	$(MAKELIB) wait.a wait.o
+	$(MAKELIB) $(LDFLAGS) wait.a wait.o

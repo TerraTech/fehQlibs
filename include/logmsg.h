@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include "error.h"
 
-extern void logmsg(char *who, int ecode, unsigned int class, char *msg);
+extern void logmsg(const char *who, int ecode, unsigned int class,
+	const char *msg);
 
 /* useful combinations of params */
 /* class: FATAL (hard) - system error */
@@ -24,7 +25,7 @@ extern void logmsg(char *who, int ecode, unsigned int class, char *msg);
 #define log_cat(n) logmsg("",0,CAT,m)
 
 /* build log message from multiple partial strings */
-extern char *build_log_msg(char *[]);
-#define B(...) build_log_msg((char *[]){__VA_ARGS__,NULL}) // K/R sect. 7.3
+extern char *build_log_msg(const char *[]);
+#define B(...) build_log_msg((const char *[]){__VA_ARGS__,NULL}) // K/R sect. 7.3
 
 #endif

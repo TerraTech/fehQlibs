@@ -84,3 +84,16 @@ void byte_zero(char *s,register unsigned int n)
     if (!n) { break; } *s++ = 0; --n;
   }
 }
+
+void byte_fill(char *s,register unsigned int n,const int c)
+{
+  register char ch;
+  
+  ch = c;
+  for (;;) {
+    if (!n) { break; } *s++ = ch; --n;
+    if (!n) { break; } *s++ = ch; --n;
+    if (!n) { break; } *s++ = ch; --n;
+    if (!n) { break; } *s++ = ch; --n;
+  }
+}

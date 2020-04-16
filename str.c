@@ -8,7 +8,7 @@
 	@brief string handling functions
 */
 
-unsigned int str_copy(register char *s,register char *t) 
+unsigned int str_copy(register char *s,register const char *t)
 {
   register int len;
 
@@ -21,7 +21,7 @@ unsigned int str_copy(register char *s,register char *t)
   }
 }
 
-unsigned int str_copyb(register char *s,register char *t,unsigned int max)
+unsigned int str_copyb(register char *s,register const char *t,unsigned int max)
 {
   register int len;
 
@@ -37,7 +37,7 @@ unsigned int str_copyb(register char *s,register char *t,unsigned int max)
   return len;
 }
 
-int str_diff(register char *s,register char *t) 
+int str_diff(register const char *s,register const char *t)
 {
   register char x;
 
@@ -51,7 +51,7 @@ int str_diff(register char *s,register char *t)
        - ((int)(unsigned int)(unsigned char) *t);
 }
 
-int str_diffn(register char *s,register char *t,unsigned int len) 
+int str_diffn(register const char *s,register const char *t,unsigned int len)
 {
   register char x;
 
@@ -65,9 +65,9 @@ int str_diffn(register char *s,register char *t,unsigned int len)
        - ((int)(unsigned int)(unsigned char) *t);
 }
 
-unsigned int str_len(register char *s) 
+unsigned int str_len(register const char *s)
 {
-  register char *t;
+  register const char *t;
 
   t = s;
   for (;;) {
@@ -78,10 +78,10 @@ unsigned int str_len(register char *s)
   }
 }
 
-unsigned int str_chr(register char *s,int c) 
+unsigned int str_chr(register const char *s,int c)
 {
   register char ch;
-  register char *t;
+  register const char *t;
 
   ch = c;
   t = s;
@@ -94,11 +94,11 @@ unsigned int str_chr(register char *s,int c)
   return t - s;
 }
 
-unsigned int str_rchr(register char *s,int c) 
+unsigned int str_rchr(register const char *s,int c)
 {
   register char ch;
-  register char *t;
-  register char *u;
+  register const char *t;
+  register const char *u;
 
   ch = c;
   t = s;
@@ -113,7 +113,7 @@ unsigned int str_rchr(register char *s,int c)
   return u - s;
 }
 
-int str_start(register char *s,register char *t) 
+int str_start(register const char *s,register const char *t)
 {
   register char x;
 
@@ -125,7 +125,7 @@ int str_start(register char *s,register char *t)
   }
 }
 
-char *str_append(char *dest, char *s) 
+char *str_append(char *dest, char const *s)
 {
   static stralloc sa = {0};
 

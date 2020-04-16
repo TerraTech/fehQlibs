@@ -16,7 +16,7 @@
 
 #define WHO "logmsg"
 
-char *build_log_msg(char *x[])
+char *build_log_msg(const char *x[])
 {
   stralloc sa = {0};
   stralloc_copys(&sa,"");  
@@ -27,7 +27,7 @@ char *build_log_msg(char *x[])
   return(sa.s);
 }
 
-void logmsg(char *who,int ecode,unsigned int class,char *msg) 
+void logmsg(const char *who,int ecode,unsigned int class,const char *msg)
 {
   char strnum[FMT_ULONG];
   char *codestr = "";

@@ -3,6 +3,8 @@
 
 extern void case_lowers(char *);
 extern void case_lowerb(char *,unsigned int);
+extern void case_uppers(char *);
+extern void case_upperb(char *,unsigned int);
 extern int case_diffs(char *,char *);
 extern int case_diffrs(char *,char *);
 extern int case_diffb(char *,unsigned int,char *);

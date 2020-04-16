@@ -17,11 +17,15 @@ fehQlibs-12c:	Checking carefully all dnsstub return codes
 fehQlibs-13:	Bugs fixed: str_copy (wrong paranthesis setting)
 		UI changed:	log() -> log_who()
 		Added: man str(3)
-fehQlibs-13a: Fixed wrong input boundary checking for multiple
+fehQlibs-13a:	Fixed wrong input boundary checking for multiple
 	DNSCACHE variables settings in dns_rcip.c. (Tx. J.W.)
 fehQlibs-13b:	Added missing str_copyb() function in str.c.
-fehQlibs-13c: iopause it RC < 0 forces end of connection loop.
+fehQlibs-13c:	iopause it RC < 0 forces end of connection loop.
 	DNS stub return codes straightend with djbdnscurve6-36.
-fehQlibs-13d: Fixed integration bugs not displaying IPv6 addresses
-	(dns_ip.c, dns_mx.c).
-	Wrong dependency check in Makefile for SHAREDLIBS (tx. Alan C.). 
+fehQlibs-13d:	Fixed integration bugs not displaying IPv6 addresses
+		(dns_ip.c, dns_mx.c).
+		Wrong dependency check in Makefile for SHAREDLIBS (tx. Alan S.). 
+fehQlibs-14:	Added 'const' for most input arguments + updated man:
+		byte, logmsg, str, pathexec. Patch contributed by Alan S.
+		Added byte_fill and case_upper function (potentially for SRS).
+		Included CLFAGS and LDFLAGS macros in Makefile.

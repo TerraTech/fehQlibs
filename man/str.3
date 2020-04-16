@@ -4,25 +4,25 @@ str \- string evaluation and comparision (for allocated strings)
 .SH SYNTAX
 .B #include  \(dqstr.h\(dq
 
-unsigned int \fBstr_copy\fR(char *\fIdst\fR, char *\fIsrc\fR);
+unsigned int \fBstr_copy\fR(char *\fIdst\fR, const char *\fIsrc\fR);
 .br
-unsigned int \fBstr_copyb\fR(char *\fIdst\fR, char *\fIsrc\fR, unsigned int \fIlen\fR);
+unsigned int \fBstr_copyb\fR(char *\fIdst\fR, const char *\fIsrc\fR, unsigned int \fIlen\fR);
 .br
-unsigned int \fBstr_chr\fR(char *\fIs\fR, int \fIc\fR);
+unsigned int \fBstr_chr\fR(const char *\fIs\fR, int \fIc\fR);
 .br
-unsigned int \fBstr_rchr\fR(char *\fIs\fR, int \fIc\fR);
+unsigned int \fBstr_rchr\fR(const char *\fIs\fR, int \fIc\fR);
 .br
-unsigned int \fBstr_diff\fR(char *\fIs\fR, char *\fIt\fR);
+unsigned int \fBstr_diff\fR(const char *\fIs\fR, const char *\fIt\fR);
 .br
-unsigned int \fBstr_diffn\fR(char *\fIs\fR, char *\fIt\fR, unsigned int \fIlen\fR);
+unsigned int \fBstr_diffn\fR(const char *\fIs\fR, const char *\fIt\fR, unsigned int \fIlen\fR);
 .br
-unsigned int \fBstr_equal\fR(char *\fIs\fR, char *\fIt\fR);
+unsigned int \fBstr_equal\fR(const char *\fIs\fR, const char *\fIt\fR);
 .br
 unsigned int \fBstr_len\fP(const char *\fIs\fR);
 .br
-unsigned int \fBstr_starts\fP(char *\fIdst\fR, char *\fIsrc\fR);
+unsigned int \fBstr_starts\fP(const char *\fIdst\fR, const char *\fIsrc\fR);
 .br
-char *\fBstr_append\fP(char *\fIdst\fR, char *\fIs\fR);
+char *\fBstr_append\fP(char *\fIdst\fR, const char *\fIs\fR);
 .SH DESCRIPTION
 \fBstr_copy\fR copies \fIsrc\fR into \fIdst\fR up to the first occurance of \\0 while including it. 
 It returns the number of bytes written. 

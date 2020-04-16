@@ -8,16 +8,16 @@
  *  - added '*str_append' and 'str_cat'
 */
 
-extern unsigned int str_copy(char *,char *);
-extern unsigned int str_copyb(char *,char *,unsigned int);
-extern int str_diff(char *,char *);
-extern int str_diffn(char *,char *,unsigned int);
+extern unsigned int str_copy(char *,const char *);
+extern unsigned int str_copyb(char *,const char *,unsigned int);
+extern int str_diff(const char *,const char *);
+extern int str_diffn(const char *,const char *,unsigned int);
 //extern unsigned int str_len(char *);  // --> this produces lot of warnings !!!
 extern unsigned int str_len();
-extern unsigned int str_chr(char *,int);
-extern unsigned int str_rchr(char *,int);
-extern int str_start(char *,char *);
-extern char *str_append(char *out,char *s);
+extern unsigned int str_chr(const char *,int);
+extern unsigned int str_rchr(const char *,int);
+extern int str_start(const char *,const char *);
+extern char *str_append(char *out,const char *s);
 
 #define str_equal(s,t) (!str_diff((s),(t)))
 #define str_cat(s,t) str_append(s,t)

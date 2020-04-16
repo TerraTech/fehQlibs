@@ -35,7 +35,7 @@ int pathexec_multienv(stralloc *sa)
   return stralloc_cat(&plus,sa);
 }
 
-void pathexec(char **argv)
+void pathexec(char * const *argv)
 {
   char **e;
   unsigned int elen;
@@ -81,7 +81,7 @@ void pathexec(char **argv)
   alloc_free(e);
 }
 
-void pathexec_run(char *file,char **argv,char **envp)
+void pathexec_run(const char *file,char *const *argv,char *const *envp)
 {
   char *path;
   unsigned int split;

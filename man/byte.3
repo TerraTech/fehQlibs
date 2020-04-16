@@ -13,9 +13,11 @@ void \fBbyte_copy\fP(char *\fIout\fR,unsigned int \fIlen\fR,const char *\fIin\fR
 void \fBbyte_copyr\fP(char *\fIout\fR,unsigned int \fIlen\fR,const char *\fIin\fR);
 
 int \fBbyte_diff\fP(const char *\fIone\fR,unsigned int \fIlen\fR,const char *\fItwo\fR);
-.br
+
 int \fBbyte_equal\fP(const char *\fIone\fR,unsigned int \fIlen\fR,const char *\fItwo\fR);
 
+void \fBbyte_fill\fP(char *\fIout\fR,unsigned int \fIlen\fR,const char \fIc\fR);
+.br
 void \fBbyte_zero\fP(char *\fIout\fR,unsigned int \fIlen\fR);
 .SH DESCRIPTION
 .B byte_chr 
@@ -68,6 +70,10 @@ otherwise.
 When the strings are different, 
 .B byte_equal 
 does not read bytes past the first difference.
+
+.B byte_fill
+fills \fIout\fR[0], \fIout\fR[1], ..., \fIout\fR[\fIlen\fR-1] 
+with a single byte \fIc\fR.
 
 .B byte_zero 
 sets \fIout\fR[0], \fIout\fR[1], ..., \fIout\fR[\fIlen\fR-1] to 0.

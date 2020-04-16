@@ -80,6 +80,27 @@ void case_lowers(char *s)
   }
 }
 
+void case_upperb(char *s,unsigned int len)
+{
+  unsigned char x;
+  while (len > 0) {
+    --len;
+    x = *s - 'a';
+    if (x <= 'z' - 'a') *s = x + 'A';
+    ++s;
+  }
+}
+
+void case_uppers(char *s)
+{
+  unsigned char x;
+  while ((x = *s)) {
+    x -= 'a';
+    if (x <= 'z' - 'a') *s = x + 'A';
+    ++s;
+  }
+}
+
 int case_startb(register char *s,unsigned int len,register char *t)
 {
   register unsigned char x;

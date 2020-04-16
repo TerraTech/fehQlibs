@@ -8,6 +8,10 @@ void \fBcase_lowers\fP(\fIs\fR);
 .br
 void \fBcase_lowerb\fP(\fIs\fR,\fIlen\fR);
 .br
+void \fBcase_uppers\fP(\fIs\fR);
+.br
+void \fBcase_upperb\fP(\fIs\fR,\fIlen\fR);
+.br
 int \fBcase_diffs\fP(\fIs\fR,\fIt\fR);
 .br
 int \fBcase_equals\fP(\fIs\fR,\fIt\fR);
@@ -41,6 +45,20 @@ converts each uppercase byte in the buffer
 of length
 .IR len ,
 to lowercase.
+
+.B case_uppers
+converts each lowercase byte in the string
+.I s
+to uppercase.
+.I s
+must be 0-terminated.
+
+.B case_upperb
+converts each lowercase byte in the buffer
+.IR s ,
+of length
+.IR len ,
+to uppercase.
 
 .B case_diffs
 lexicographically compares lowercase versions of the strings

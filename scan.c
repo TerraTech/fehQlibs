@@ -18,7 +18,7 @@ static long int fromhex(unsigned char c)
   return -1;
 }
 
-unsigned int scan_0x(register char *s,register unsigned int *u)
+unsigned int scan_0x(register const char *s,register unsigned int *u)
 {
   register unsigned int pos = 0;
   register unsigned long result = 0;
@@ -32,7 +32,7 @@ unsigned int scan_0x(register char *s,register unsigned int *u)
   return pos;
 }
 
-unsigned int scan_8long(register char *s,register unsigned long *u)
+unsigned int scan_8long(register const char *s,register unsigned long *u)
 {
   register unsigned int pos = 0;
   register unsigned long result = 0;
@@ -46,7 +46,7 @@ unsigned int scan_8long(register char *s,register unsigned long *u)
   return pos;
 }
 
-unsigned int scan_uint(register char *s,register unsigned int *u)
+unsigned int scan_uint(register const char *s,register unsigned int *u)
 {
   register unsigned int pos; 
   unsigned long result;
@@ -56,7 +56,7 @@ unsigned int scan_uint(register char *s,register unsigned int *u)
   return pos;
 }
 
-unsigned int scan_ulong(register char *s,register unsigned long *u)
+unsigned int scan_ulong(register const char *s,register unsigned long *u)
 {
   register unsigned int pos = 0;
   register unsigned long result = 0;
@@ -70,7 +70,7 @@ unsigned int scan_ulong(register char *s,register unsigned long *u)
   return pos;
 }
 
-unsigned int scan_xlong(char *s,unsigned long *u) 
+unsigned int scan_xlong(const char *s,unsigned long *u)
 {
   register const char *t = s;
   register int l = 0;
@@ -84,7 +84,7 @@ unsigned int scan_xlong(char *s,unsigned long *u)
   return t-s;
 }
 
-unsigned int scan_xint(char *s,unsigned int *i) 
+unsigned int scan_xint(const char *s,unsigned int *i)
 {
   register const char *t = s;
   register unsigned int l = 0;
